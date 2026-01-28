@@ -38,3 +38,25 @@
 
 # debug information files
 *.dwo
+
+# VS specific crap
+.vs/
+Debug/
+Release/
+*.log
+*.ncb
+*.opt
+*.plg
+*.suo
+*.user
+*.aps
+*.clw
+*.pdb
+*.ilk
+
+# PVS Studio
+*.PVS-Studio.*
+*.suppress
+*.xcuserstate
+*.xcscheme
+*.xcbkptlist
