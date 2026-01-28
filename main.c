@@ -117,7 +117,7 @@ void __stdcall glRasterPos2i(GLint x, GLint y);
 void __stdcall glRectf(GLfloat x1, GLfloat y1, GLfloat x2, GLfloat y2);
 void __stdcall glRecti(GLint x1, GLint y1, GLint x2, GLint y2);
 void __stdcall glReadBuffer(GLenum mode);
-int sub_10008BD0();
+int sub_10008BD0(); /* FS: UNUSED */
 void __stdcall glDrawPixels(GLsizei width, GLsizei height, GLenum format, GLenum type, const GLvoid *pixels);
 void __stdcall glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid *pixels);
 void __stdcall glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z);
@@ -175,7 +175,6 @@ int __cdecl sub_100204A0(int a1, int a2);
 int __cdecl sub_100206F0(int a1, int a2);
 int __cdecl sub_10020A60(int a1, int a2);
 char __cdecl sub_10020DD0(int a1, int a2);
-int nullsub_1(); // weak
 void sub_10021290();
 void sub_10021380();
 int sub_10021550(); // weak
@@ -199,7 +198,7 @@ void __stdcall glArrayElement(GLint i);
 void __stdcall glDrawArrays(GLenum mode, GLint first, GLsizei count);
 void __stdcall glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid *indices);
 void __stdcall glVertexPointer(GLint size, GLenum type, GLsizei stride, const GLvoid *pointer);
-int __stdcall sub_10028920(int a1, int a2, int a3, int a4, int a5);
+int __stdcall glVertexPointerEXT(GLint size, GLenum type, GLsizei stride, GLsizei count, const GLvoid *pointer);
 void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height);
 int __stdcall wglChoosePixelFormat(int a1, int a2);
 BOOL __stdcall wglCopyContext(HGLRC, HGLRC, UINT);
@@ -325,14 +324,14 @@ int __thiscall sub_10032D30(char *this, int a2, int a3, int a4, int a5, int a6, 
 int __cdecl sub_10032DE0(int a1, int a2, unsigned int a3);
 int __cdecl sub_10032ED0(int a1);
 void __cdecl sub_10032FB0(int a1, const void *a2);
-void __cdecl sub_10033050(int a1, float *a2);
+void __cdecl WGL_GetMatrixMode_Params(GLenum pname, GLfloat *params);
 void __cdecl sub_100330E0(int a1, float *a2);
 int *__cdecl sub_10033AA0(int a1, double *a2);
 int *__cdecl sub_10034600(int a1, float a2, float a3);
 int *__cdecl sub_10034BD0(int a1, float a2, float a3);
 int *__cdecl sub_100351A0(int a1, float a2, float a3);
 int *__cdecl sub_10035760(int a1, float a2, float a3, float a4);
-int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4);
+int *__cdecl WGL_SetScalef(GLenum pname, GLfloat x, GLfloat y, GLfloat z);
 float *__cdecl sub_10036030(float *a1, float *a2);
 float *__cdecl sub_100363C0(float *a1, float *a2);
 // BOOL __stdcall VerQueryValueA(LPCVOID pBlock, LPCSTR lpSubBlock, LPVOID *lplpBuffer, PUINT puLen);
@@ -500,7 +499,7 @@ int dword_10046044 = 1; // weak
 char byte_10046068[] = { '\0' }; // weak
 char byte_10046069[] = { '\0' }; // weak
 char byte_1004606A[] = { '\0' }; // weak
-char byte_1004606B[32765] =
+char WGL_ROTATING_BANNER[] =
 {
 #include "banner.h"
 }; // weak
@@ -526,10 +525,7 @@ CHAR aSaveFxGlideNum_1[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
 char byte_1004F22E[] = { '2' }; // weak
 CHAR aFxGlideNumTmu_0[] = "FX_GLIDE_NUM_TMU"; // idb
 CHAR aFxGlideNumTmu_1[] = "FX_GLIDE_NUM_TMU"; // idb
-char Mode[] = "wb"; // idb
 char FileName[] = "WickedGL.swp"; // idb
-char aRb[] = "rb"; // idb
-char aWickedglSwp[] = "WickedGL.swp"; // idb
 CHAR aSoftwareMetaby[] = "Software\\Metabyte"; // idb
 CHAR aWickedglCompre[] = "WickedGL_Compress_Accepted"; // idb
 CHAR aWickedglCompre_0[] = "WickedGL_Compress_Rejected"; // idb
@@ -539,11 +535,11 @@ CHAR aWickedglTcCach_0[] = "WickedGL_TC_Cache_Miss"; // idb
 CHAR aWickedglAnimat[] = "WickedGL_Animated_Tex_Cnt"; // idb
 CHAR aWickedglAvgCom[] = "WickedGL_Avg_Compress_Err"; // idb
 char aMetabyteWicked[18] = "METABYTE/WICKED3D"; // weak
-char a3dfxInteractiv_0[29] = "3Dfx Interactive Voodoo2(tm)"; // weak
-char a3dfxInteractiv_1[29] = "3Dfx Interactive Voodoo5(tm)"; // weak
-char a3dfxInteractiv_2[29] = "3Dfx Interactive Voodoo3(tm)"; // weak
-char a3dfxInteractiv[28] = "3Dfx Interactive Voodoo(tm)"; // weak
-char a11[4] = "1.1"; // weak
+const char WGL_RENDERER_STR_V2[] = "3Dfx Interactive Voodoo2(tm)"; // weak
+const char WGL_RENDERER_STR_V5[] = "3Dfx Interactive Voodoo5(tm)"; // weak
+const char WGL_RENDERER_STR_V3[] = "3Dfx Interactive Voodoo3(tm)"; // weak
+const char WGL_RENDERER_STR_V1[] = "3Dfx Interactive Voodoo(tm)"; // weak
+const char WGL_VERSION_STR[] = "1.1"; // weak
 CHAR aSoftwareMetaby_0[] = "Software\\Metabyte"; // idb
 CHAR aWickedglGammaC[] = "WickedGL_gamma_control"; // idb
 char aGlArbMultitext[555] = "GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array GL_SGIS_multitexture WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string WGL_3DFX_gamma_control WGL_EXT_gamma_control GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_S3_s3tc "; // weak
@@ -555,8 +551,8 @@ char aGlExtAbgrGlExt_0[444] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint G
 char aGlExtAbgrGlExt_1[469] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_S3_s3tc "; // weak
 char aGlExtAbgrGlExt_2[399] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string "; // weak
 char aGrsstwinopenNo[] = "grSstWinOpen: not enough memory for requested buffers"; // idb
-CHAR Caption[] = "Glide fatal error"; // idb
-char aGlideError_0[12] = "Glide error"; // weak
+CHAR WGL_GLIDE_FATAL_ERROR_STR[] = "Glide fatal error"; // idb
+char WGL_GLIDE_ERROR_STR[12] = "Glide error"; // weak
 char aGrsstwinopenex[16] = "grSstWinOpenExt"; // weak
 CHAR aGlideError[] = "Glide error"; // idb
 char aWickedglDemoVe[23] = "WICKEDGL DEMO VERSION:"; // weak
@@ -703,10 +699,10 @@ int dword_100544A0[] = { 0 }; // weak
 int dword_100547E8 = 0; // weak
 int dword_100547EC = 0; // weak
 int dword_100547F0 = 0; // weak
-int dword_100547F4 = 0; // weak
+GLenum WGL_CURRENT_BUFFER_MODE = 0; // weak
 int dword_100547F8 = 0; // weak
 int dword_100547FC = 0; // weak
-int dword_10054800 = 0; // weak
+GLint WGL_PIXELSINROW_LEN = 0; // weak
 LARGE_INTEGER Frequency = { { 0u, 0 } }; // idb
 int WGL_NUM_TMU = 0; // weak
 int WGL_MEM_FB = 0; // weak
@@ -747,7 +743,7 @@ LONG dwNewLong = 0; // idb
 HDC hdc = NULL; // idb
 int dword_100548A4 = 0; // weak
 int dword_100548A8 = 0; // weak
-int dword_100548AC = 0; // idb
+GLenum WGL_CURRENT_MATRIXMODE = 0; // idb
 int dword_100548B0 = 0; // weak
 int dword_100548B4 = 0; // weak
 int dword_100548B8 = 0; // weak
@@ -921,10 +917,10 @@ int dword_1042CA70; // weak
 int dword_1042CA74[]; // weak
 int dword_1042CA78; // weak
 int dword_1042CA7C; // weak
-int dword_1042CA80; // weak
-int dword_1042CA84; // weak
-int dword_1042CA88; // weak
-int dword_1042CA8C; // weak
+GLint WGL_VERTEX_POINTER_SIZE; // weak
+GLenum WGL_VERTEX_POINTER_TYPE; // weak
+GLsizei WGL_VERTEX_POINTER_STRIDE; // weak
+GLvoid *WGL_CURRENT_VERTEX_POINTER; // weak
 float flt_1042CA90; // weak
 float flt_1042CA94; // weak
 float flt_1042CA98; // weak
@@ -1050,12 +1046,12 @@ float flt_1042D130; // weak
 int dword_1042D134; // weak
 float flt_1042D138; // weak
 int dword_1042D13C; // weak
-int current_glpolygon_mode; // weak
-int dword_1042D144; // weak
+int WGL_CURRENT_GLPOLYGON_MODE; // weak
+int WGL_GR_BITS_RGBA_VAL; // weak
 int dword_1042D148; // weak
 int dword_1042D14C; // weak
 int dword_1042D150; // weak
-int dword_1042D154; // weak
+int WGL_GR_ZDEPTH_MIN_MAX_VAL; // weak
 int dword_1042D15C; // weak
 int dword_1042D160; // weak
 int dword_1042D164; // weak
@@ -1113,7 +1109,7 @@ int dword_10437150; // weak
 int dword_10437154; // weak
 int dword_10437158; // weak
 int dword_1043715C; // weak
-int dword_10437160; // weak
+int WGL_DISPLAY_LOW_VID_MEM_ERROR; // weak
 HDC dword_10437164; // idb
 HDC dword_10437168; // idb
 int (__stdcall *dword_1043716C)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD); // weak
@@ -1472,7 +1468,7 @@ FILE *sub_10001320()
 	int *v5; // [esp+8h] [ebp-8h]
 	int Buffer; // [esp+Ch] [ebp-4h] BYREF
 
-	result = fopen(FileName, Mode);
+	result = fopen(FileName, "wb");
 	v1 = result;
 	if (result)
 	{
@@ -1534,8 +1530,9 @@ FILE *sub_10001460()
 	int v7; // edx
 	size_t Size; // [esp+4h] [ebp-8h] BYREF
 	int Buffer; // [esp+8h] [ebp-4h] BYREF
+	const char wickedgl_swapfile[] = "WickedGL.swp"; // idb
 
-	result = fopen(aWickedglSwp, aRb);
+	result = fopen(wickedgl_swapfile, "rb");
 	v1 = result;
 	if (result)
 	{
@@ -2593,16 +2590,16 @@ void __stdcall glBegin(GLenum mode)
 	{
 		goto LABEL_49;
 	}
-	if (current_glpolygon_mode == GL_POINT)
+	if (WGL_CURRENT_GLPOLYGON_MODE == GL_POINT)
 	{
 LABEL_48:
 		dword_1042CA04 = Draw_GL_POINT; // point parameters draw
-		dword_1042CA08 = nullsub_1;
+		dword_1042CA08 = NULL;
 		goto LABEL_50;
 	}
-	if (current_glpolygon_mode != GL_LINE)
+	if (WGL_CURRENT_GLPOLYGON_MODE != GL_LINE)
 	{
-		if (current_glpolygon_mode == GL_FILL)
+		if (WGL_CURRENT_GLPOLYGON_MODE == GL_FILL)
 		{
 			switch (mode)
 			{
@@ -2616,21 +2613,21 @@ LABEL_48:
 					goto LABEL_46;
 				case GL_TRIANGLES:
 					dword_1042CA04 = (int (*)(void))sub_10021290;
-					dword_1042CA08 = nullsub_1;
+					dword_1042CA08 = NULL;
 					break;
 				case GL_TRIANGLE_STRIP:
 				case GL_QUAD_STRIP:
 					dword_1042CA04 = (int (*)(void))sub_100219F0;
-					dword_1042CA08 = nullsub_1;
+					dword_1042CA08 = NULL;
 					break;
 				case GL_TRIANGLE_FAN:
 				case GL_POLYGON:
 					dword_1042CA04 = (int (*)(void))sub_10021380;
-					dword_1042CA08 = nullsub_1;
+					dword_1042CA08 = NULL;
 					break;
 				case GL_QUADS:
 						dword_1042CA04 = sub_10021800;
-						dword_1042CA08 = nullsub_1;
+						dword_1042CA08 = NULL;
 						break;
 					default:
 						goto LABEL_49;
@@ -2638,8 +2635,8 @@ LABEL_48:
 			goto LABEL_50;
 		}
 LABEL_49:
-		dword_1042CA04 = nullsub_1;
-		dword_1042CA08 = nullsub_1;
+		dword_1042CA04 = NULL;
+		dword_1042CA08 = NULL;
 		goto LABEL_50;
 	}
 	switch (mode)
@@ -2649,7 +2646,7 @@ LABEL_49:
 		case GL_LINES:
 LABEL_47:
 			dword_1042CA04 = sub_10021550;
-			dword_1042CA08 = nullsub_1;
+			dword_1042CA08 = NULL;
 			break;
 		case GL_LINE_LOOP:
 		case GL_POLYGON:
@@ -2660,7 +2657,7 @@ LABEL_45:
 		case GL_LINE_STRIP:
 LABEL_46:
 			dword_1042CA04 = sub_100215E0;
-			dword_1042CA08 = nullsub_1;
+			dword_1042CA08 = NULL;
 			break;
 		default:
 			goto LABEL_49;
@@ -2879,7 +2876,7 @@ LABEL_80:
 		}
 	}
 }
-// 10021280: using guessed type int nullsub_1();
+// 10021280: using guessed type int NULL();
 // 10021550: using guessed type int sub_10021550();
 // 100215E0: using guessed type int sub_100215E0();
 // 10021800: using guessed type int sub_10021800();
@@ -2920,7 +2917,7 @@ LABEL_80:
 // 1042CBAC: using guessed type int dword_1042CBAC;
 // 1042D040: using guessed type int (__cdecl *dword_1042D040)(_DWORD, _DWORD, _DWORD, _DWORD);
 // 1042D044: using guessed type int (__cdecl *dword_1042D044)(_DWORD, _DWORD, _DWORD, _DWORD);
-// 1042D140: using guessed type int current_glpolygon_mode;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
 // 10437130: using guessed type int dword_10437130;
 // 10437188: using guessed type int dword_10437188;
 // 1043719C: using guessed type char byte_1043719C;
@@ -3493,9 +3490,9 @@ void __stdcall glClearDepth(GLclampd depth)
 	{
 		v2 = 0.0;
 	}
-	dword_1042D164 = (__int64)((double)(unsigned int)dword_1042D154 * v2);
+	dword_1042D164 = (__int64)((double)(unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL * v2);
 }
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 1042D164: using guessed type int dword_1042D164;
 
 //----- (10003DB0) --------------------------------------------------------
@@ -4463,7 +4460,7 @@ void __stdcall glDepthFunc(GLenum func)
 		WGL_DEPTH_BUFFER_FUNCTION = v1;
 		if (v1 == 3)
 		{
-			v2 = (double)((unsigned int)dword_1042D154 >> 15);
+			v2 = (double)((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15);
 			v4 = v2 > 1.0;
 			v5 = 0;
 			v6 = 1.0 == v2;
@@ -4474,7 +4471,7 @@ void __stdcall glDepthFunc(GLenum func)
 		}
 		if (v1 == 6)
 		{
-			v7 = (double)((unsigned int)dword_1042D154 >> 15);
+			v7 = (double)((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15);
 			v9 = v7 > 1.0;
 			v10 = 0;
 			v11 = 1.0 == v7;
@@ -4496,7 +4493,7 @@ LABEL_23:
 // 10054844: using guessed type int WGL_COMPARE_FUNCTION;
 // 10054848: using guessed type int dword_10054848;
 // 1005484C: using guessed type float flt_1005484C;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 10437188: using guessed type int dword_10437188;
 // 104371D8: using guessed type int WGL_DEPTH_BUFFER_FUNCTION;
 // 104371E8: using guessed type int WGL_DEPTHBUFFER_MODE;
@@ -4646,7 +4643,7 @@ LABEL_9:
 		goto LABEL_9;
 	}
 LABEL_10:
-	v11 = (double)(unsigned int)dword_1042D154;
+	v11 = (double)(unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL;
 	zNeara = v3 * v11;
 	v12 = v11 * zFar;
 	if (flt_10439D78 != zNeara || flt_10439D7C != v12)
@@ -4664,7 +4661,7 @@ LABEL_10:
 		}
 	}
 }
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 10437188: using guessed type int dword_10437188;
 // 104371E8: using guessed type int WGL_DEPTHBUFFER_MODE;
 // 10439D78: using guessed type float flt_10439D78;
@@ -5295,7 +5292,7 @@ LABEL_63:
 		if (cap != 32823)
 			return;
 		dword_10054830 = 0;
-		v7 = current_glpolygon_mode == GL_FILL;
+		v7 = WGL_CURRENT_GLPOLYGON_MODE == GL_FILL;
 LABEL_80:
 		if (v7)
 		{
@@ -5307,7 +5304,7 @@ LABEL_80:
 	if (cap == 10754)
 	{
 		dword_10054834 = 0;
-		v7 = current_glpolygon_mode == GL_LINE;
+		v7 = WGL_CURRENT_GLPOLYGON_MODE == GL_LINE;
 		goto LABEL_80;
 	}
 	if (cap == 3169)
@@ -5321,7 +5318,7 @@ LABEL_80:
 		if (cap != 10753)
 			return;
 		dword_10054838 = 0;
-		v7 = current_glpolygon_mode == GL_POINT;
+		v7 = WGL_CURRENT_GLPOLYGON_MODE == GL_POINT;
 		goto LABEL_80;
 	}
 	if (dword_100548CC)
@@ -5417,7 +5414,7 @@ LABEL_61:
 // 1042D124: using guessed type float flt_1042D124;
 // 1042D128: using guessed type float flt_1042D128;
 // 1042D13C: using guessed type int dword_1042D13C;
-// 1042D140: using guessed type int current_glpolygon_mode;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
 // 10437188: using guessed type int dword_10437188;
 // 10437194: using guessed type int dword_10437194;
 // 1043719C: using guessed type char byte_1043719C;
@@ -5546,7 +5543,7 @@ void __stdcall glEnable(GLenum cap)
 					WGL_DEPTH_BUFFER_FUNCTION = WGL_COMPARE_FUNCTION;
 					if (WGL_COMPARE_FUNCTION == GR_CMP_LEQUAL)
 					{
-						v1 = (double)((unsigned int)dword_1042D154 >> 15);
+						v1 = (double)((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15);
 						v3 = v1 > 1.0;
 						v4 = 0;
 						v5 = 1.0 == v1;
@@ -5557,7 +5554,7 @@ void __stdcall glEnable(GLenum cap)
 					}
 					if (WGL_COMPARE_FUNCTION == GR_CMP_GEQUAL)
 					{
-						v6 = (double)((unsigned int)dword_1042D154 >> 15);
+						v6 = (double)((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15);
 						v8 = v6 > 1.0;
 						v9 = 0;
 						v10 = 1.0 == v6;
@@ -5728,7 +5725,7 @@ LABEL_74:
 		if (cap != 32823)
 			return;
 		dword_10054830 = 1;
-		v18 = current_glpolygon_mode == GL_FILL;
+		v18 = WGL_CURRENT_GLPOLYGON_MODE == GL_FILL;
 LABEL_121:
 		if (v18)
 		{
@@ -5740,7 +5737,7 @@ LABEL_121:
 	if (cap == 10754)
 	{
 		dword_10054834 = 1;
-		if (current_glpolygon_mode == GL_LINE)
+		if (WGL_CURRENT_GLPOLYGON_MODE == GL_LINE)
 		{
 			dword_10437188 = 1;
 			dword_104371D0 = dword_1005483C;
@@ -5758,7 +5755,7 @@ LABEL_121:
 		if (cap != 10753)
 			return;
 		dword_10054838 = 1;
-		v18 = current_glpolygon_mode == GL_POINT;
+		v18 = WGL_CURRENT_GLPOLYGON_MODE == GL_POINT;
 		goto LABEL_121;
 	}
 	if (dword_100548CC)
@@ -5879,8 +5876,8 @@ LABEL_102:
 // 1042D124: using guessed type float flt_1042D124;
 // 1042D128: using guessed type float flt_1042D128;
 // 1042D13C: using guessed type int dword_1042D13C;
-// 1042D140: using guessed type int current_glpolygon_mode;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 10437188: using guessed type int dword_10437188;
 // 10437194: using guessed type int dword_10437194;
 // 1043719C: using guessed type char byte_1043719C;
@@ -6157,7 +6154,7 @@ void __stdcall glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdoubl
 	v7[9] = (bottom + top) / v6;
 	v7[10] = -((zNear + zFar) / (zFar - zNear));
 	v7[14] = zNear * zFar * -2.0 / (zFar - zNear);
-	sub_100330E0(dword_100548AC, v7);
+	sub_100330E0(WGL_CURRENT_MATRIXMODE, v7);
 }
 
 //----- (100072A0) --------------------------------------------------------
@@ -6199,16 +6196,16 @@ void __stdcall glGetFloatv(GLenum pname, GLfloat *params)
 {
 	switch (pname)
 	{
-		case 0xBA6u:
-			sub_10033050(GL_MODELVIEW, params);
+		case GL_MODELVIEW_MATRIX:
+			WGL_GetMatrixMode_Params(GL_MODELVIEW, params);
 			break;
-		case 0xBA7u:
-			sub_10033050(5889, params);
+		case GL_PROJECTION_MATRIX:
+			WGL_GetMatrixMode_Params(GL_PROJECTION, params);
 			break;
-		case 0xBA8u:
-			sub_10033050(5890, params);
+		case GL_TEXTURE_MATRIX:
+			WGL_GetMatrixMode_Params(GL_TEXTURE, params);
 			break;
-		case 0xB12u:
+		case GL_POINT_SIZE_RANGE:
 			*params = 1.0;
 			params[1] = 8192.0;
 			break;
@@ -6222,8 +6219,8 @@ void __stdcall glGetDoublev(GLenum pname, GLdouble *params)
 
 	switch (pname)
 	{
-		case 0xBA6u:
-			sub_10033050(GL_MODELVIEW, v2);
+		case GL_MODELVIEW_MATRIX:
+			WGL_GetMatrixMode_Params(GL_MODELVIEW, v2);
 LABEL_3:
 			*params = v2[0];
 			params[1] = v2[1];
@@ -6242,13 +6239,13 @@ LABEL_3:
 			params[14] = v2[14];
 			params[15] = v2[15];
 			return;
-		case 0xBA7u:
-			sub_10033050(5889, v2);
+		case GL_PROJECTION_MATRIX:
+			WGL_GetMatrixMode_Params(GL_PROJECTION, v2);
 			goto LABEL_3;
-		case 0xBA8u:
-			sub_10033050(5890, v2);
+		case GL_TEXTURE_MATRIX:
+			WGL_GetMatrixMode_Params(GL_TEXTURE, v2);
 			goto LABEL_3;
-		case 0xB12u:
+		case GL_POINT_SIZE_RANGE:
 			*params = 0.0;
 			*((_DWORD *)params + 2) = 0;
 			*((_DWORD *)params + 3) = 1086324736;
@@ -6391,10 +6388,10 @@ LABEL_13:
 			case GL_UNPACK_LSB_FIRST:
 				goto LABEL_18;
 			case GL_UNPACK_ROW_LENGTH:
-				*params = dword_10054800;
+				*params = WGL_PIXELSINROW_LEN;
 				break;
 			case GL_UNPACK_SKIP_ROWS:
-			case GL_PACK_SWAPunsigned charS:
+			case GL_PACK_SWAP_BYTES:
 				goto LABEL_13;
 			case GL_UNPACK_SKIP_PIXELS:
 				goto LABEL_17;
@@ -6406,7 +6403,7 @@ LABEL_13:
 	}
 }
 // 100511A0: using guessed type int WGL_MAXTEX_SIZE;
-// 10054800: using guessed type int dword_10054800;
+// 10054800: using guessed type int WGL_PIXELSINROW_LEN;
 // 10054818: using guessed type int dword_10054818;
 // 10054840: using guessed type int dword_10054840;
 // 10054880: using guessed type int dword_10054880;
@@ -6453,24 +6450,24 @@ const GLubyte *__stdcall glGetString(GLenum name)
 			{
 				if (dword_104370D0)
 				{
-					result = (const GLubyte *)a3dfxInteractiv_0;
+					result = (const GLubyte *)WGL_RENDERER_STR_V2;
 				}
 				else if ((unsigned __int8)WGL_MEM_FB <= 0x10u)
 				{
-					result = (const GLubyte *)a3dfxInteractiv_2;
+					result = (const GLubyte *)WGL_RENDERER_STR_V3;
 				}
 				else
 				{
-					result = (const GLubyte *)a3dfxInteractiv_1;
+					result = (const GLubyte *)WGL_RENDERER_STR_V5;
 				}
 			}
 			else
 			{
-				result = (const GLubyte *)a3dfxInteractiv;
+				result = (const GLubyte *)WGL_RENDERER_STR_V1;
 			}
 			break;
 		case GL_VERSION:
-			result = (const GLubyte *)a11;
+			result = (const GLubyte *)WGL_VERSION_STR;
 			break;
 		case GL_EXTENSIONS:
 			if (!RegOpenKeyExA(HKEY_LOCAL_MACHINE, aSoftwareMetaby_0, 0, KEY_ALL_ACCESS, &phkResult))
@@ -6645,13 +6642,13 @@ GLboolean __stdcall glIsTexture(GLuint texture)
 //----- (10007CE0) --------------------------------------------------------
 void __stdcall glLoadIdentity()
 {
-	sub_10032ED0(dword_100548AC);
+	sub_10032ED0(WGL_CURRENT_MATRIXMODE);
 }
 
 //----- (10007CF0) --------------------------------------------------------
 void __stdcall glLoadMatrixf(const GLfloat *m)
 {
-	sub_10032FB0(dword_100548AC, m);
+	sub_10032FB0(WGL_CURRENT_MATRIXMODE, m);
 }
 
 //----- (10007D10) --------------------------------------------------------
@@ -7067,19 +7064,19 @@ void __stdcall glColorMaterial(GLenum face, GLenum mode)
 //----- (100084F0) --------------------------------------------------------
 void __stdcall glMatrixMode(GLenum mode)
 {
-	dword_100548AC = mode;
+	WGL_CURRENT_MATRIXMODE = mode;
 }
 
 //----- (10008500) --------------------------------------------------------
 void __stdcall glMultMatrixd(const GLdouble *m)
 {
-	sub_10033AA0(dword_100548AC, (double *)m);
+	sub_10033AA0(WGL_CURRENT_MATRIXMODE, (double *)m);
 }
 
 //----- (10008520) --------------------------------------------------------
 void __stdcall glMultMatrixf(const GLfloat *m)
 {
-	sub_100330E0(dword_100548AC, (float *)m);
+	sub_100330E0(WGL_CURRENT_MATRIXMODE, (float *)m);
 }
 
 //----- (10008540) --------------------------------------------------------
@@ -7188,16 +7185,16 @@ void __stdcall glOrtho(GLdouble left, GLdouble right, GLdouble bottom, GLdouble 
 	v6[13] = -((bottom + top) / (top - bottom));
 	v6[10] = -2.0 / (zFar - zNear);
 	v6[14] = -((zNear + zFar) / (zFar - zNear));
-	sub_100330E0(dword_100548AC, v6);
+	sub_100330E0(WGL_CURRENT_MATRIXMODE, v6);
 }
 
 //----- (10008860) --------------------------------------------------------
 void __stdcall glPixelStorei(GLenum pname, GLint param)
 {
-	if (pname == 3314)
-		dword_10054800 = param;
+	if (pname == GL_UNPACK_ROW_LENGTH)
+		WGL_PIXELSINROW_LEN = param;
 }
-// 10054800: using guessed type int dword_10054800;
+// 10054800: using guessed type int WGL_PIXELSINROW_LEN;
 
 //----- (10008880) --------------------------------------------------------
 void __stdcall glPixelZoom(GLfloat xfactor, GLfloat yfactor)
@@ -7211,7 +7208,7 @@ void __stdcall glPixelZoom(GLfloat xfactor, GLfloat yfactor)
 //----- (100088A0) --------------------------------------------------------
 void __stdcall glPolygonMode(GLenum face, GLenum mode)
 {
-	current_glpolygon_mode = mode;
+	WGL_CURRENT_GLPOLYGON_MODE = mode;
 	switch (mode)
 	{
 		case GL_POINT:
@@ -7232,7 +7229,7 @@ void __stdcall glPolygonMode(GLenum face, GLenum mode)
 // 10054834: using guessed type int dword_10054834;
 // 10054838: using guessed type int dword_10054838;
 // 1005483C: using guessed type int dword_1005483C;
-// 1042D140: using guessed type int current_glpolygon_mode;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
 // 10437188: using guessed type int dword_10437188;
 // 104371D0: using guessed type int dword_104371D0;
 
@@ -7243,20 +7240,20 @@ void __stdcall glPolygonOffset(GLfloat factor, GLfloat units)
 	__int64 v3; // rax
 	int v4; // ecx
 
-	v2 = (unsigned int)dword_1042D154 >> 15;
-	if (!((unsigned int)dword_1042D154 >> 15))
+	v2 = (unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15;
+	if (!((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15))
 		v2 = 1;
 	v3 = (__int64)((factor + units) * (double)v2);
 	dword_1005483C = v3;
-	switch (current_glpolygon_mode)
+	switch (WGL_CURRENT_GLPOLYGON_MODE)
 	{
-		case 6912:
+		case GL_POINT:
 			v4 = dword_10054838;
 			break;
-		case 6913:
+		case GL_LINE:
 			v4 = dword_10054834;
 			break;
-		case 6914:
+		case GL_FILL:
 			v4 = dword_10054830;
 			break;
 		default:
@@ -7272,8 +7269,8 @@ void __stdcall glPolygonOffset(GLfloat factor, GLfloat units)
 // 10054834: using guessed type int dword_10054834;
 // 10054838: using guessed type int dword_10054838;
 // 1005483C: using guessed type int dword_1005483C;
-// 1042D140: using guessed type int current_glpolygon_mode;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 10437188: using guessed type int dword_10437188;
 // 104371D0: using guessed type int dword_104371D0;
 
@@ -7284,14 +7281,14 @@ void __stdcall glPopMatrix()
 	int v1; // ecx
 	int v2; // eax
 
-	v0 = dword_100548AC;
-	if (dword_100548AC == GL_MODELVIEW)
+	v0 = WGL_CURRENT_MATRIXMODE;
+	if (WGL_CURRENT_MATRIXMODE == GL_MODELVIEW)
 	{
 		sub_10032FB0(GL_MODELVIEW, (char *)&unk_10437C28 + 64 * (--dword_10438428 & 0x1F));
 	}
-	else if (dword_100548AC == 5889)
+	else if (WGL_CURRENT_MATRIXMODE == GL_PROJECTION)
 	{
-		sub_10032FB0(5889, (char *)&unk_10438474 + 64 * (--dword_10438C74 & 0x1F));
+		sub_10032FB0(GL_PROJECTION, (char *)&unk_10438474 + 64 * (--dword_10438C74 & 0x1F));
 	}
 	else
 	{
@@ -7314,22 +7311,22 @@ void __stdcall glPushMatrix()
 	float *v2; // [esp-4h] [ebp-8h]
 	float *v3; // [esp-4h] [ebp-8h]
 
-	if (dword_100548AC == GL_MODELVIEW)
+	if (WGL_CURRENT_MATRIXMODE == GL_MODELVIEW)
 	{
 		v2 = (float *)((char *)&unk_10437C28 + 64 * (dword_10438428++ & 0x1F));
-		sub_10033050(GL_MODELVIEW, v2);
+		WGL_GetMatrixMode_Params(GL_MODELVIEW, v2);
 	}
-	else if (dword_100548AC == 5889)
+	else if (WGL_CURRENT_MATRIXMODE == GL_PROJECTION)
 	{
 		v3 = (float *)((char *)&unk_10438474 + 64 * (dword_10438C74++ & 0x1F));
-		sub_10033050(5889, v3);
+		WGL_GetMatrixMode_Params(GL_PROJECTION, v3);
 	}
 	else
 	{
 		v1 = (float *)((char *)&unk_10438D08 + 64 * (32 * dword_100548CC + (dword_10439D08[dword_100548CC] & 0x1F)));
-		v0 = dword_100548AC;
+		v0 = WGL_CURRENT_MATRIXMODE;
 		++dword_10439D08[dword_100548CC];
-		sub_10033050(v0, v1);
+		WGL_GetMatrixMode_Params(v0, v1);
 	}
 }
 // 100548CC: using guessed type int dword_100548CC;
@@ -7374,19 +7371,19 @@ void __stdcall glRecti(GLint x1, GLint y1, GLint x2, GLint y2)
 //----- (10008BA0) --------------------------------------------------------
 void __stdcall glReadBuffer(GLenum mode)
 {
-	if (mode == 1028)
+	if (mode == GL_FRONT)
 	{
-		dword_100547F4 = 0;
+		WGL_CURRENT_BUFFER_MODE = 0;
 	}
-	else if (mode == 1029)
+	else if (mode == GL_BACK)
 	{
-		dword_100547F4 = 1;
+		WGL_CURRENT_BUFFER_MODE = 1;
 	}
 }
-// 100547F4: using guessed type int dword_100547F4;
+// 100547F4: using guessed type int WGL_CURRENT_BUFFER_MODE;
 
 //----- (10008BD0) --------------------------------------------------------
-int sub_10008BD0()
+int sub_10008BD0() /* FS: UNUSED */
 {
 	int result; // eax
 	char *v1; // esi
@@ -7402,7 +7399,7 @@ int sub_10008BD0()
 	ucb = 0;
 	v6 = 0;
 	v7 = 0;
-	result = grLfbLock(0, 2, 255, 255, 0, &v3);
+	result = grLfbLock(GR_LFB_READ_ONLY, GR_BUFFER_AUXBUFFER, GR_LFBWRITEMODE_ANY, GR_ORIGIN_ANY, FXFALSE, &v3);
 	if (result)
 	{
 		v1 = (char *)lp;
@@ -7467,8 +7464,8 @@ void __stdcall glDrawPixels(GLsizei width, GLsizei height, GLenum format, GLenum
 	if ((format == GL_RGBA || format == GL_RGB) && type == 5121)
 	{
 		formata = width;
-		if (dword_10054800 >= width)
-			formata = dword_10054800;
+		if (WGL_PIXELSINROW_LEN >= width)
+			formata = WGL_PIXELSINROW_LEN;
 		v6 = (__int64)((double)width * *(float *)&dword_100547EC);
 		v29 = v6;
 		v7 = (__int64)((double)height * *(float *)&dword_100547F0);
@@ -7849,7 +7846,7 @@ LABEL_73:
 // 100547F0: using guessed type int dword_100547F0;
 // 100547F8: using guessed type int dword_100547F8;
 // 100547FC: using guessed type int dword_100547FC;
-// 10054800: using guessed type int dword_10054800;
+// 10054800: using guessed type int WGL_PIXELSINROW_LEN;
 // 10437188: using guessed type int dword_10437188;
 // 1043718C: using guessed type int WGL_RENDER_BUFFER_MODE;
 // 10437190: using guessed type int OLD_WGL_RENDER_BUFFER_MODE;
@@ -8007,34 +8004,34 @@ void __stdcall glReadPixels(
 			v8 = x;
 			if (x < 0)
 				v8 = 0;
-			if (v8 >= ::width)
-				v8 = ::width - 1;
+			if (v8 >= width)
+				v8 = width - 1;
 			v9 = y;
 			if (y < 0)
 				v9 = 0;
-			if (v9 >= ::height)
-				v9 = ::height - 1;
-			if (v9 < ::height - dword_10437154)
-				v9 = ::height - dword_10437154;
+			if (v9 >= height)
+				v9 = height - 1;
+			if (v9 < height - dword_10437154)
+				v9 = height - dword_10437154;
 			v28[0] = 0;
 			grFinish();
-			grLfbReadRegion(2, v8, ::height - v9 - 1, 1, 1, (unsigned int)dword_1042D154 > 0xFFFF ? 4 : 2, v28);
-			if ((unsigned int)dword_1042D154 <= 0xFFFF)
+			grLfbReadRegion(2, v8, height - v9 - 1, 1, 1, (unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL > 0xFFFF ? 4 : 2, v28);
+			if ((unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL <= 0xFFFF)
 				v28[0] = LOWORD(v28[0]);
-			*(float *)pixels = 1.0 / (double)(unsigned int)dword_1042D154 * (double)v28[0];
+			*(float *)pixels = 1.0 / (double)(unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL * (double)v28[0];
 		}
 	}
 	else if (format == 6407 && type == 5121)
 	{
 		grFinish();
-		if (dword_1042D144 + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
+		if (WGL_GR_BITS_RGBA_VAL + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
 		{
 			v24 = 0;
 			v25 = 0;
 			v23 = 20;
 			v26 = 0;
 			v27 = 0;
-			if (!grLfbLock(0, dword_100547F4, 0, 255, 0, &v23))
+			if (!grLfbLock(GR_LFB_READ_ONLY, WGL_CURRENT_BUFFER_MODE, GR_LFBWRITEMODE_565, GR_ORIGIN_ANY, FXFALSE, &v23))
 				return;
 			if (height > 0)
 			{
@@ -8075,7 +8072,7 @@ void __stdcall glReadPixels(
 			v23 = 20;
 			v26 = 0;
 			v27 = 0;
-			if (!grLfbLock(0, dword_100547F4, 5, 255, 0, &v23))
+			if (!grLfbLock(GR_LFB_READ_ONLY, WGL_CURRENT_BUFFER_MODE, GR_LFBWRITEMODE_8888, GR_ORIGIN_ANY, FXFALSE, &v23))
 				return;
 			if (height > 0)
 			{
@@ -8109,18 +8106,18 @@ void __stdcall glReadPixels(
 				} while (!v16);
 			}
 		}
-		grLfbUnlock(0, dword_100547F4);
+		grLfbUnlock(0, WGL_CURRENT_BUFFER_MODE);
 	}
 }
 // 100365AE: using guessed type int __stdcall grLfbUnlock(_DWORD, _DWORD);
 // 100365B4: using guessed type int __stdcall grLfbLock(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
 // 100365C0: using guessed type int __stdcall grLfbReadRegion(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
-// 100547F4: using guessed type int dword_100547F4;
-// 1042D144: using guessed type int dword_1042D144;
+// 100547F4: using guessed type int WGL_CURRENT_BUFFER_MODE;
+// 1042D144: using guessed type int WGL_GR_BITS_RGBA_VAL;
 // 1042D148: using guessed type int dword_1042D148;
 // 1042D14C: using guessed type int dword_1042D14C;
 // 1042D150: using guessed type int dword_1042D150;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 10437154: using guessed type int dword_10437154;
 // 10437188: using guessed type int dword_10437188;
 // 104371E8: using guessed type int WGL_DEPTHBUFFER_MODE;
@@ -8153,15 +8150,15 @@ void __stdcall glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 		v13 = sin(v4);
 		if (x == 1.0)
 		{
-			sub_10034600(dword_100548AC, anglea, v13);
+			sub_10034600(WGL_CURRENT_MATRIXMODE, anglea, v13);
 		}
 		else if (y == 1.0)
 		{
-			sub_10034BD0(dword_100548AC, anglea, v13);
+			sub_10034BD0(WGL_CURRENT_MATRIXMODE, anglea, v13);
 		}
 		else if (z == 1.0)
 		{
-			sub_100351A0(dword_100548AC, anglea, v13);
+			sub_100351A0(WGL_CURRENT_MATRIXMODE, anglea, v13);
 		}
 		else
 		{
@@ -8191,7 +8188,7 @@ void __stdcall glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 			v16[7] = 0.0;
 			memset(&v16[11], 0, 16);
 			v16[15] = 1.0;
-			sub_100330E0(dword_100548AC, v16);
+			sub_100330E0(WGL_CURRENT_MATRIXMODE, v16);
 		}
 	}
 }
@@ -8200,7 +8197,7 @@ void __stdcall glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 //----- (10009C30) --------------------------------------------------------
 void __stdcall glScalef(GLfloat x, GLfloat y, GLfloat z)
 {
-	sub_10035BD0(dword_100548AC, x, y, z);
+	WGL_SetScalef(WGL_CURRENT_MATRIXMODE, x, y, z);
 }
 
 //----- (10009C50) --------------------------------------------------------
@@ -17460,7 +17457,7 @@ LABEL_17:
 //----- (10014B10) --------------------------------------------------------
 void __stdcall glTranslatef(GLfloat x, GLfloat y, GLfloat z)
 {
-	sub_10035760(dword_100548AC, x, y, z);
+	sub_10035760(WGL_CURRENT_MATRIXMODE, x, y, z);
 }
 
 //----- (10014B30) --------------------------------------------------------
@@ -17473,7 +17470,7 @@ void __stdcall glTranslated(GLdouble x, GLdouble y, GLdouble z)
 	v5 = z;
 	v4 = y;
 	v3 = x;
-	sub_10035760(dword_100548AC, v3, v4, v5);
+	sub_10035760(WGL_CURRENT_MATRIXMODE, v3, v4, v5);
 }
 
 //----- (10014B60) --------------------------------------------------------
@@ -28581,8 +28578,8 @@ LABEL_61:
 			flt_100548EC = flt_10054908 * ia + flt_1005490C * v63 + flt_10054910 * v64;
 			flt_100548F0 = flt_10054918 * ia + flt_1005491C * v63 + flt_10054920 * v64;
 		}
-		v46 = (float *)(dword_1042CA8C + i * dword_1042CA88);
-		if (dword_1042CA80 == 2)
+		v46 = (float *)(WGL_CURRENT_VERTEX_POINTER + i * WGL_VERTEX_POINTER_STRIDE);
+		if (WGL_VERTEX_POINTER_SIZE == 2)
 		{
 			if (v44)
 				v44(dword_10364A00, *(_DWORD *)v46, *((_DWORD *)v46 + 1), 0);
@@ -28822,9 +28819,9 @@ LABEL_61:
 // 1042CA74: using guessed type int dword_1042CA74[];
 // 1042CA78: using guessed type int dword_1042CA78;
 // 1042CA7C: using guessed type int dword_1042CA7C;
-// 1042CA80: using guessed type int dword_1042CA80;
-// 1042CA88: using guessed type int dword_1042CA88;
-// 1042CA8C: using guessed type int dword_1042CA8C;
+// 1042CA80: using guessed type int WGL_VERTEX_POINTER_SIZE;
+// 1042CA88: using guessed type int WGL_VERTEX_POINTER_STRIDE;
+// 1042CA8C: using guessed type int WGL_CURRENT_VERTEX_POINTER;
 // 1042CB34: using guessed type float flt_1042CB34;
 // 1042CB38: using guessed type float flt_1042CB38;
 // 1042CB3C: using guessed type float flt_1042CB3C;
@@ -29218,8 +29215,8 @@ LABEL_65:
 						flt_100548EC = flt_1005490C * v73 + flt_10054910 * v74 + flt_10054908 * v72;
 						flt_100548F0 = flt_10054918 * v72 + flt_1005491C * v73 + flt_10054920 * v74;
 					}
-					v54 = (float *)(dword_1042CA8C + v5 * dword_1042CA88);
-					if (dword_1042CA80 == 2)
+					v54 = (float *)(WGL_CURRENT_VERTEX_POINTER + v5 * WGL_VERTEX_POINTER_STRIDE);
+					if (WGL_VERTEX_POINTER_SIZE == 2)
 					{
 						if (v52)
 							v52(dword_10364A00, *(_DWORD *)v54, *((_DWORD *)v54 + 1), 0);
@@ -29487,9 +29484,9 @@ LABEL_139:
 // 1042CA74: using guessed type int dword_1042CA74[];
 // 1042CA78: using guessed type int dword_1042CA78;
 // 1042CA7C: using guessed type int dword_1042CA7C;
-// 1042CA80: using guessed type int dword_1042CA80;
-// 1042CA88: using guessed type int dword_1042CA88;
-// 1042CA8C: using guessed type int dword_1042CA8C;
+// 1042CA80: using guessed type int WGL_VERTEX_POINTER_SIZE;
+// 1042CA88: using guessed type int WGL_VERTEX_POINTER_STRIDE;
+// 1042CA8C: using guessed type int WGL_CURRENT_VERTEX_POINTER;
 // 1042CB34: using guessed type float flt_1042CB34;
 // 1042CB38: using guessed type float flt_1042CB38;
 // 1042CB3C: using guessed type float flt_1042CB3C;
@@ -30005,8 +30002,8 @@ LABEL_330:
 							flt_100548EC = flt_10054908 * countc + flt_1005490C * modec + flt_10054910 * typec;
 							flt_100548F0 = flt_10054918 * countc + flt_1005491C * modec + flt_10054920 * typec;
 						}
-						v180 = (float *)(dword_1042CA8C + v177 * dword_1042CA88);
-						if (dword_1042CA80 == 2)
+						v180 = (float *)(WGL_CURRENT_VERTEX_POINTER + v177 * WGL_VERTEX_POINTER_STRIDE);
+						if (WGL_VERTEX_POINTER_SIZE == 2)
 						{
 							if (v178)
 								v178(dword_10364A00, *(_DWORD *)v180, *((_DWORD *)v180 + 1), 0);
@@ -30450,8 +30447,8 @@ LABEL_197:
 							flt_100548EC = flt_10054908 * countb + flt_1005490C * modeb + flt_10054910 * typeb;
 							flt_100548F0 = flt_10054918 * countb + flt_1005491C * modeb + flt_10054920 * typeb;
 						}
-						v116 = (float *)(dword_1042CA8C + v113 * dword_1042CA88);
-						if (dword_1042CA80 == 2)
+						v116 = (float *)(WGL_CURRENT_VERTEX_POINTER + v113 * WGL_VERTEX_POINTER_STRIDE);
+						if (WGL_VERTEX_POINTER_SIZE == 2)
 						{
 							if (v114)
 								v114(dword_10364A00, *(_DWORD *)v116, *((_DWORD *)v116 + 1), 0);
@@ -30901,8 +30898,8 @@ LABEL_64:
 								flt_100548EC = flt_10054908 * counta + flt_1005490C * modea + flt_10054910 * typea;
 								flt_100548F0 = flt_10054918 * counta + flt_1005491C * modea + flt_10054920 * typea;
 							}
-							v50 = (float *)(dword_1042CA8C + dword_1042CA88 * v46);
-							if (dword_1042CA80 == 2)
+							v50 = (float *)(WGL_CURRENT_VERTEX_POINTER + WGL_VERTEX_POINTER_STRIDE * v46);
+							if (WGL_VERTEX_POINTER_SIZE == 2)
 							{
 								if (v48)
 									v48(dword_10364A00, *(_DWORD *)v50, *((_DWORD *)v50 + 1), 0);
@@ -31164,9 +31161,9 @@ LABEL_401:
 // 1042CA74: using guessed type int dword_1042CA74[];
 // 1042CA78: using guessed type int dword_1042CA78;
 // 1042CA7C: using guessed type int dword_1042CA7C;
-// 1042CA80: using guessed type int dword_1042CA80;
-// 1042CA88: using guessed type int dword_1042CA88;
-// 1042CA8C: using guessed type int dword_1042CA8C;
+// 1042CA80: using guessed type int WGL_VERTEX_POINTER_SIZE;
+// 1042CA88: using guessed type int WGL_VERTEX_POINTER_STRIDE;
+// 1042CA8C: using guessed type int WGL_CURRENT_VERTEX_POINTER;
 // 1042CB34: using guessed type float flt_1042CB34;
 // 1042CB38: using guessed type float flt_1042CB38;
 // 1042CB3C: using guessed type float flt_1042CB3C;
@@ -31228,52 +31225,53 @@ void __stdcall glVertexPointer(GLint size, GLenum type, GLsizei stride, const GL
 {
 	int v4; // eax
 
-	dword_1042CA80 = size;
-	dword_1042CA84 = type;
+	WGL_VERTEX_POINTER_SIZE = size;
+	WGL_VERTEX_POINTER_TYPE = type;
 	if (stride)
 	{
-		dword_1042CA88 = stride;
+		WGL_VERTEX_POINTER_STRIDE = stride;
 	}
 	else
 	{
 		v4 = -(type != GL_FLOAT);
 		LOBYTE(v4) = v4 & 0xFD;
-		dword_1042CA88 = size * (v4 + 4);
+		WGL_VERTEX_POINTER_STRIDE = size * (v4 + 4);
 	}
-	dword_1042CA8C = (int)pointer;
+	WGL_CURRENT_VERTEX_POINTER = pointer;
 	++dword_1042CA24;
 }
 // 1042CA24: using guessed type int dword_1042CA24;
-// 1042CA80: using guessed type int dword_1042CA80;
-// 1042CA84: using guessed type int dword_1042CA84;
-// 1042CA88: using guessed type int dword_1042CA88;
-// 1042CA8C: using guessed type int dword_1042CA8C;
+// 1042CA80: using guessed type int WGL_VERTEX_POINTER_SIZE;
+// 1042CA84: using guessed type int WGL_VERTEX_POINTER_TYPE;
+// 1042CA88: using guessed type int WGL_VERTEX_POINTER_STRIDE;
+// 1042CA8C: using guessed type int WGL_CURRENT_VERTEX_POINTER;
 
 //----- (10028920) --------------------------------------------------------
-int __stdcall sub_10028920(int a1, int a2, int a3, int a4, int a5)
+int __stdcall glVertexPointerEXT(GLint size, GLenum type, GLsizei stride, GLsizei count, const GLvoid *pointer)
 {
 	int v6; // eax
 
-	dword_1042CA80 = a1;
-	dword_1042CA84 = a2;
-	if (a3)
+	WGL_VERTEX_POINTER_SIZE = size;
+	WGL_VERTEX_POINTER_TYPE = type;
+	if (stride)
 	{
-		dword_1042CA88 = a3;
+		WGL_VERTEX_POINTER_STRIDE = stride;
 	}
 	else
 	{
-		v6 = -(a2 != 5126);
+		v6 = -(type != GL_FLOAT);
 		LOBYTE(v6) = v6 & 0xFD;
-		dword_1042CA88 = a1 * (v6 + 4);
+		WGL_VERTEX_POINTER_STRIDE = size * (v6 + 4);
 	}
-	dword_1042CA8C = a5;
+	WGL_CURRENT_VERTEX_POINTER = pointer;
+
 	return ++dword_1042CA24;
 }
 // 1042CA24: using guessed type int dword_1042CA24;
-// 1042CA80: using guessed type int dword_1042CA80;
-// 1042CA84: using guessed type int dword_1042CA84;
-// 1042CA88: using guessed type int dword_1042CA88;
-// 1042CA8C: using guessed type int dword_1042CA8C;
+// 1042CA80: using guessed type int WGL_VERTEX_POINTER_SIZE;
+// 1042CA84: using guessed type int WGL_VERTEX_POINTER_TYPE;
+// 1042CA88: using guessed type int WGL_VERTEX_POINTER_STRIDE;
+// 1042CA8C: using guessed type int WGL_CURRENT_VERTEX_POINTER;
 
 //----- (10028990) --------------------------------------------------------
 void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
@@ -31294,16 +31292,16 @@ void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 
 	v4 = (double)x;
 	v5 = (double)width;
-	::x = x;
+//	::x = x; /* FS: TODO: ??? */
 	widtha = (float)height;
 	dword_10054888 = height;
 	dword_10054880 = y;
 	dword_10054884 = width;
-	xa = (double)::height - widtha - (double)y;
+	xa = (double)height - widtha - (double)y;
 	if (flt_10439D10 != v4 || flt_10439D14 != xa || flt_10439D18 != v5 || flt_10439D1C != widtha)
 	{
 		flt_10439D10 = v4;
-		flt_10439D14 = (double)::height - widtha - (double)y;
+		flt_10439D14 = (double)height - widtha - (double)y;
 		flt_10439D1C = (float)height;
 		flt_10439D18 = v5;
 		v8 = v4;
@@ -31311,7 +31309,7 @@ void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 			v8 = v4 - 0.5;
 		flt_10439D20 = v8;
 		if (xa >= 0.5)
-			flt_10439D24 = (double)::height - widtha - (double)y;
+			flt_10439D24 = (double)height - widtha - (double)y;
 		else
 			flt_10439D24 = xa - 0.5;
 		dword_10439D88 = 0;
@@ -31348,13 +31346,13 @@ void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 			dword_104373AC = (int)(__int64)xa < 0 ? 0 : (__int64)xa;
 			flt_1042D120 = (float)(unsigned int)dword_104373AC;
 			v15 = (__int64)flt_10439D28;
-			if (::width < (int)v15)
-				LODWORD(v15) = ::width;
+			if (width < (int)v15)
+				LODWORD(v15) = width;
 			dword_104373B4 = v15;
 			flt_1042D124 = (float)(unsigned int)v15;
 			v16 = (__int64)flt_10439D2C;
-			if (::height < (int)v16)
-				LODWORD(v16) = ::height;
+			if (height < (int)v16)
+				LODWORD(v16) = height;
 			dword_104373BC = v16;
 			flt_1042D128 = (float)(unsigned int)v16;
 		}
@@ -31503,15 +31501,15 @@ int __cdecl geErrorCallbackFn(LPCSTR lpText, int fatal)
 	result = _strcmpi(lpText, aGrsstwinopenNo);
 	if (result)
 	{
-		v3 = Caption;
+		v3 = WGL_GLIDE_FATAL_ERROR_STR;
 		if (!fatal)
-			v3 = aGlideError_0;
+			v3 = WGL_GLIDE_ERROR_STR;
 		result = MessageBoxA(0, lpText, v3, 0x1010u);
-		dword_10437160 = 0;
+		WGL_DISPLAY_LOW_VID_MEM_ERROR = 0;
 	}
 	else
 	{
-		dword_10437160 = 1;
+		WGL_DISPLAY_LOW_VID_MEM_ERROR = 1;
 	}
 	return result;
 }
@@ -31542,7 +31540,7 @@ int __cdecl sub_10028F30(int a1, int a2, char a3)
 	v14 = 0;
 	v15 = 0;
 	v16 = 0;
-	result = grLfbLock(1, 0, 0, 0, 0, &v12);
+	result = grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v12);
 	if (result)
 	{
 		v4 = 0;
@@ -31611,7 +31609,7 @@ void __cdecl sub_10029000(int a1, int a2, char *a3)
 			v16 = 0;
 			v17 = 0;
 			v18 = 0;
-			if (grLfbLock(1, 0, 0, 0, 0, &v14))
+			if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v14))
 			{
 				v5 = 0;
 				v12 = 0;
@@ -31686,7 +31684,7 @@ unsigned int __cdecl sub_10029100(int a1, const char *a2)
 			v17 = 0;
 			v18 = 0;
 			v19 = 0;
-			result = grLfbLock(1, 0, 0, 0, 0, &v15);
+			result = grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v15);
 			if (result)
 			{
 				v5 = 0;
@@ -31920,7 +31918,7 @@ LABEL_27:
 	v123 = *(float *)&v7;
 	if (*(float *)&v7 == 0.0)
 	{
-		if (dword_10437160)
+		if (WGL_DISPLAY_LOW_VID_MEM_ERROR)
 		{
 			if (WGL_IS_VSA100)
 				sprintf(
@@ -31980,7 +31978,7 @@ LABEL_38:
 		ucb = 0;
 		v121 = 0;
 		v122 = 0;
-		if (grLfbLock(1, 0, 0, 0, 0, &v118))
+		if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 		{
 			v16 = 0;
 			v112 = 0;
@@ -32025,7 +32023,7 @@ LABEL_38:
 		ucb = 0;
 		v121 = 0;
 		v122 = 0;
-		if (grLfbLock(1, 0, 0, 0, 0, &v118))
+		if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 		{
 			v26 = 0;
 			v99 = 0;
@@ -32083,7 +32081,7 @@ LABEL_38:
 		ucb = 0;
 		v121 = 0;
 		v122 = 0;
-		if (grLfbLock(1, 0, 0, 0, 0, &v118))
+		if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 		{
 			v36 = 0;
 			v107 = 0;
@@ -32157,7 +32155,7 @@ LABEL_38:
 					ucb = 0;
 					v121 = 0;
 					v122 = 0;
-					if (grLfbLock(1, 0, 0, 0, 0, &v118))
+					if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 					{
 						v48 = 0;
 						v108 = 0;
@@ -32207,7 +32205,7 @@ LABEL_38:
 					ucb = 0;
 					v121 = 0;
 					v122 = 0;
-					if (grLfbLock(1, 0, 0, 0, 0, &v118))
+					if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 					{
 						v58 = 0;
 						v109 = 0;
@@ -32253,7 +32251,7 @@ LABEL_38:
 					ucb = 0;
 					v121 = 0;
 					v122 = 0;
-					if (grLfbLock(1, 0, 0, 0, 0, &v118))
+					if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 					{
 						v67 = 0;
 						v110 = 0;
@@ -32297,7 +32295,7 @@ LABEL_38:
 					ucb = 0;
 					v121 = 0;
 					v122 = 0;
-					if (grLfbLock(1, 0, 0, 0, 0, &v118))
+					if (grLfbLock(GR_LFB_WRITE_ONLY, GR_BUFFER_FRONTBUFFER, GR_LFBWRITEMODE_565, GR_ORIGIN_UPPER_LEFT, FXFALSE, &v118))
 					{
 						v77 = 0;
 						v111 = 0;
@@ -32355,10 +32353,10 @@ LABEL_148:
 	grVertexLayout(GR_PARAM_Q0, 44, GR_PARAM_DISABLE);
 	grVertexLayout(GR_PARAM_ST1, 48, GR_PARAM_DISABLE);
 	grVertexLayout(GR_PARAM_Q1, 56, GR_PARAM_DISABLE);
-	grGet(GR_BITS_RGBA, 16, &dword_1042D144);
-	grGet(GR_ZDEPTH_MIN_MAX, 8, &dword_1042D154);
+	grGet(GR_BITS_RGBA, 16, &WGL_GR_BITS_RGBA_VAL);
+	grGet(GR_ZDEPTH_MIN_MAX, 8, &WGL_GR_ZDEPTH_MIN_MAX_VAL);
 	if (!*(_DWORD *)&WGL_32BPP_Mode)
-		*(_DWORD *)&WGL_32BPP_Mode = (dword_1042D144 + dword_1042D148 + dword_1042D14C + dword_1042D150 > 16) + 3;
+		*(_DWORD *)&WGL_32BPP_Mode = (WGL_GR_BITS_RGBA_VAL + dword_1042D148 + dword_1042D14C + dword_1042D150 > 16) + 3;
 	v84 = v123;
 	if (v123 != 0.0)
 	{
@@ -32396,7 +32394,7 @@ LABEL_148:
 	ucb = 0;
 	v121 = 0;
 	v122 = 0;
-	if (grLfbLock(0, 2, 255, 255, 0, &v118))
+	if (grLfbLock(GR_LFB_READ_ONLY, GR_BUFFER_AUXBUFFER, GR_LFBWRITEMODE_ANY, GR_ORIGIN_ANY, FXFALSE, &v118))
 	{
 		v88 = (char *)lp;
 		dword_10437154 = 0;
@@ -32440,11 +32438,11 @@ LABEL_148:
 // 1004F068: using guessed type int dword_1004F068;
 // 10054810: using guessed type int WGL_NUM_TMU;
 // 10054894: using guessed type int WGL_BPP;
-// 1042D144: using guessed type int dword_1042D144;
+// 1042D144: using guessed type int WGL_GR_BITS_RGBA_VAL;
 // 1042D148: using guessed type int dword_1042D148;
 // 1042D14C: using guessed type int dword_1042D14C;
 // 1042D150: using guessed type int dword_1042D150;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 104370D0: using guessed type int dword_104370D0;
 // 104370D4: using guessed type int WGL_IS_VSA100;
 // 10437130: using guessed type int dword_10437130;
@@ -32584,18 +32582,18 @@ void sub_1002A2F0()
 	{
 		v4 = byte_10046068[0];
 		dword_10437170 = 1;
-		v7 = byte_1004606B[0];
+		v7 = WGL_ROTATING_BANNER[0];
 		v5 = byte_10046069[0];
 		v6 = byte_1004606A[0];
 		for (i = 0; i < 0x8000; i += 4)
 		{
 			v2 = byte_10046068[i];
-			if (v2 == v4 && byte_10046069[i] == v5 && byte_1004606A[i] == v6 && byte_1004606B[i] == v7)
+			if (v2 == v4 && byte_10046069[i] == v5 && byte_1004606A[i] == v6 && WGL_ROTATING_BANNER[i] == v7)
 			{
 				byte_10046068[i] = 0;
 				byte_10046069[i] = 0;
 				byte_1004606A[i] = 0;
-				byte_1004606B[i] = 0;
+				WGL_ROTATING_BANNER[i] = 0;
 			}
 			else
 			{
@@ -32768,10 +32766,10 @@ HGLRC __stdcall wglCreateContext(HDC hdc)
 	dword_100547E8 = 0;
 	dword_100547F0 = 1065353216;
 	dword_100547EC = 1065353216;
-	dword_100547F4 = 1;
+	WGL_CURRENT_BUFFER_MODE = 1;
 	dword_100547FC = 0;
 	dword_100547F8 = 0;
-	dword_10054800 = 0;
+	WGL_PIXELSINROW_LEN = 0;
 	QueryPerformanceFrequency(&Frequency);
 	dword_1042CA18 = dword_1042CA14[0] ^ 0x55555555;
 	dword_1042CA28 = 0;
@@ -32856,7 +32854,7 @@ HGLRC __stdcall wglCreateContext(HDC hdc)
 		dword_1042CC8C[v10] = 0;
 		dword_1042CC90[v10] = 0;
 	} while (v9 < 8);
-	v37 = (unsigned int)dword_1042D154 >> 15;
+	v37 = (unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL >> 15;
 	dword_1042D018 = 1045220557;
 	dword_1042D01C = 1045220557;
 	dword_1042D020 = 1045220557;
@@ -33007,7 +33005,7 @@ LABEL_80:
 		dword_100548A4 = 1029;
 		dword_100548A8 = 2305;
 		dword_100548B8 = 0;
-		dword_100548AC = 5888;
+		WGL_CURRENT_MATRIXMODE = 5888;
 		dword_100548CC = 0;
 		texture = 0;
 		dword_100548D4 = 0;
@@ -33080,19 +33078,19 @@ LABEL_80:
 		flt_1042D128 = (float)(unsigned int)dword_104373BC;
 		*(float *)&dword_1042D12C = (float)width;
 		*(float *)&dword_1042D134 = (float)height;
-		sub_10032DE0(width, height, dword_1042D154);
-		dword_1042CA04 = nullsub_1;
-		dword_1042CA08 = nullsub_1;
+		sub_10032DE0(width, height, WGL_GR_ZDEPTH_MIN_MAX_VAL);
+		dword_1042CA04 = NULL;
+		dword_1042CA08 = NULL;
 		x = 0;
 		dword_10054880 = 0;
 		dword_10054884 = width;
 		dword_10054888 = height;
 		dword_1042D13C = 7425;
-		current_glpolygon_mode = GL_FILL;
+		WGL_CURRENT_GLPOLYGON_MODE = GL_FILL;
 		dword_1042D15C = 0;
 		dword_1042D160 = 0;
-		dword_1042D164 = dword_1042D154;
-		dword_1042D168 = dword_1042D154;
+		dword_1042D164 = WGL_GR_ZDEPTH_MIN_MAX_VAL;
+		dword_1042D168 = WGL_GR_ZDEPTH_MIN_MAX_VAL;
 		dword_1042D16C = 16640;
 		dword_1042D170 = 32849;
 		sub_1002A2F0();
@@ -33111,7 +33109,7 @@ LABEL_80:
 // 1002AEB5: variable 'v25' is possibly undefined
 // 1002AEE7: variable 'v27' is possibly undefined
 // 1002AF21: variable 'v24' is possibly undefined
-// 10021280: using guessed type int nullsub_1();
+// 10021280: using guessed type int NULL();
 // 100365E4: using guessed type int __stdcall grGet(_DWORD, _DWORD, _DWORD);
 // 1003660E: using guessed type int __stdcall grGetString(_DWORD);
 // 10036614: using guessed type int __stdcall grSstSelect(_DWORD);
@@ -33120,10 +33118,10 @@ LABEL_80:
 // 100547E8: using guessed type int dword_100547E8;
 // 100547EC: using guessed type int dword_100547EC;
 // 100547F0: using guessed type int dword_100547F0;
-// 100547F4: using guessed type int dword_100547F4;
+// 100547F4: using guessed type int WGL_CURRENT_BUFFER_MODE;
 // 100547F8: using guessed type int dword_100547F8;
 // 100547FC: using guessed type int dword_100547FC;
-// 10054800: using guessed type int dword_10054800;
+// 10054800: using guessed type int WGL_PIXELSINROW_LEN;
 // 10054810: using guessed type int WGL_NUM_TMU;
 // 10054814: using guessed type int WGL_MEM_FB;
 // 10054818: using guessed type int dword_10054818;
@@ -33286,8 +33284,8 @@ LABEL_80:
 // 1042D134: using guessed type int dword_1042D134;
 // 1042D138: using guessed type float flt_1042D138;
 // 1042D13C: using guessed type int dword_1042D13C;
-// 1042D140: using guessed type int current_glpolygon_mode;
-// 1042D154: using guessed type int dword_1042D154;
+// 1042D140: using guessed type int WGL_CURRENT_GLPOLYGON_MODE;
+// 1042D154: using guessed type int WGL_GR_ZDEPTH_MIN_MAX_VAL;
 // 1042D15C: using guessed type int dword_1042D15C;
 // 1042D160: using guessed type int dword_1042D160;
 // 1042D164: using guessed type int dword_1042D164;
@@ -34799,7 +34797,7 @@ PROC __stdcall wglGetProcAddress(LPCSTR a1)
 	if (!_strcmpi(a1, aGlunlockarrays_0))
 		return glUnlockArraysEXT;
 	if (!_strcmpi(a1, aGlvertexpointe_0))
-		return (PROC)sub_10028920;
+		return (PROC)glVertexPointerEXT;
 	if (!_strcmpi(a1, aGlcolorpointer_0))
 		return (PROC)sub_100048A0;
 	if (!_strcmpi(a1, aGltexcoordpoin_0))
@@ -34933,19 +34931,19 @@ int sub_1002D2D0()
 		v1 = ::x;
 		v26 = dword_10054880;
 		width = dword_10054884;
-		v36 = dword_100548AC;
+		v36 = WGL_CURRENT_MATRIXMODE;
 		dword_100548CC = 0;
 		height = dword_10054888;
 		glViewport(0, 0, ::width, ::height);
-		dword_100548AC = 5889;
+		WGL_CURRENT_MATRIXMODE = GL_PROJECTION;
 		v19 = (float *)((char *)&unk_10438474 + 64 * (dword_10438C74++ & 0x1F));
-		sub_10033050(5889, v19);
-		sub_10032ED0(dword_100548AC);
+		WGL_GetMatrixMode_Params(GL_PROJECTION, v19);
+		sub_10032ED0(WGL_CURRENT_MATRIXMODE);
 		glOrtho(0.0, 512.0, 384.0, 0.0, -99999.0, 99999.0);
-		dword_100548AC = 5888;
+		WGL_CURRENT_MATRIXMODE = 5888;
 		v20 = (float *)((char *)&unk_10437C28 + 64 * (dword_10438428++ & 0x1F));
-		sub_10033050(GL_MODELVIEW, v20);
-		sub_10032ED0(dword_100548AC);
+		WGL_GetMatrixMode_Params(GL_MODELVIEW, v20);
+		sub_10032ED0(WGL_CURRENT_MATRIXMODE);
 		v27 = dword_10054840;
 		glDisable(GL_DEPTH_TEST);
 		v28 = dword_100548B8;
@@ -35079,9 +35077,9 @@ int sub_1002D2D0()
 			glDeleteTextures(1, (const GLuint *)y);
 		}
 		glViewport(v1, v26, width, height);
-		dword_100548AC = 5889;
-		sub_10032FB0(5889, (char *)&unk_10438474 + 64 * (--dword_10438C74 & 0x1F));
-		dword_100548AC = 5888;
+		WGL_CURRENT_MATRIXMODE = GL_PROJECTION;
+		sub_10032FB0(GL_PROJECTION, (char *)&unk_10438474 + 64 * (--dword_10438C74 & 0x1F));
+		WGL_CURRENT_MATRIXMODE = 5888;
 		sub_10032FB0(GL_MODELVIEW, (char *)&unk_10437C28 + 64 * (--dword_10438428 & 0x1F));
 		if (v27)
 			glEnable(GL_DEPTH_TEST);
@@ -35108,7 +35106,7 @@ int sub_1002D2D0()
 		sub_10030730(8960, 8704, (__int64)(double)(unsigned int)v34);
 		dword_100548E4 = v35;
 		glBindTexture(GL_TEXTURE_2D, v13);
-		dword_100548AC = v36;
+		WGL_CURRENT_MATRIXMODE = v36;
 		dword_100548CC = 1;
 		if (v37)
 			glEnable(GL_TEXTURE_2D);
@@ -35192,7 +35190,7 @@ int __stdcall wglSwapBuffers(int a1)
 		{
 			v1 = height - dword_104370C0;
 			v2 = height - dword_104370C0;
-			if (dword_1042D144 + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
+			if (WGL_GR_BITS_RGBA_VAL + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
 			{
 				if (v1 >= 19)
 					v2 = 19;
@@ -35228,7 +35226,7 @@ int __stdcall wglSwapBuffers(int a1)
 			dword_1004F074 = v5;
 			if (v5 >= 0 && GetCursorPos(&Point) && Point.x >= 0 && Point.x < width && Point.y >= 0 && Point.y < height)
 			{
-				if (dword_1042D144 + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
+				if (WGL_GR_BITS_RGBA_VAL + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
 				{
 					v15 = height - Point.y;
 					if (height - Point.y >= 19)
@@ -35343,7 +35341,7 @@ int __stdcall wglSwapBuffers(int a1)
 // 1042D130: using guessed type float flt_1042D130;
 // 1042D134: using guessed type int dword_1042D134;
 // 1042D138: using guessed type float flt_1042D138;
-// 1042D144: using guessed type int dword_1042D144;
+// 1042D144: using guessed type int WGL_GR_BITS_RGBA_VAL;
 // 1042D148: using guessed type int dword_1042D148;
 // 1042D14C: using guessed type int dword_1042D14C;
 // 1042D150: using guessed type int dword_1042D150;
@@ -39457,7 +39455,7 @@ int __cdecl sub_10032ED0(int a1)
 			return ++dword_10437C24;
 		}
 	}
-	else if (a1 == 5889)
+	else if (a1 == GL_PROJECTION)
 	{
 		result = dword_1043842C;
 		if (!dword_1043842C)
@@ -39471,8 +39469,8 @@ int __cdecl sub_10032ED0(int a1)
 	}
 	else
 	{
-		result = a1 - 5890;
-		if (a1 == 5890)
+		result = a1 - GL_TEXTURE;
+		if (a1 == GL_TEXTURE)
 		{
 			result = dword_100548CC;
 			if (!dword_10438C78[dword_100548CC])
@@ -39514,13 +39512,13 @@ void __cdecl sub_10032FB0(int a1, const void *a2)
 				dword_10439D88 = 0;
 				++dword_10437C24;
 				break;
-			case 5889:
+			case GL_PROJECTION:
 				dword_1043842C = 0;
 				qmemcpy(&flt_10438430, a2, 0x40u);
 				dword_10439D88 = 0;
 				++dword_10438470;
 				break;
-			case 5890:
+			case GL_TEXTURE:
 				v2 = dword_100548CC;
 				v3 = dword_100548CC << 6;
 				dword_10438C78[dword_100548CC] = 0;
@@ -39543,33 +39541,33 @@ void __cdecl sub_10032FB0(int a1, const void *a2)
 // 10439D88: using guessed type int dword_10439D88;
 
 //----- (10033050) --------------------------------------------------------
-void __cdecl sub_10033050(int a1, float *a2)
+void __cdecl WGL_GetMatrixMode_Params(GLenum pname, GLfloat *params)
 {
 	float *v2; // esi
 
-	if (a2)
+	if (params)
 	{
-		switch (a1)
+		switch (pname)
 		{
 			case GL_MODELVIEW:
 				v2 = (float *)&unk_100511A8;
 				if (!dword_10437BE0)
 					v2 = &flt_10437BE4;
-				qmemcpy(a2, v2, 0x40u);
+				qmemcpy(params, v2, 0x40u);
 				break;
-			case 5889:
+			case GL_PROJECTION:
 				if (dword_1043842C)
 				{
 LABEL_6:
-					qmemcpy(a2, &unk_100511A8, 0x40u);
+					qmemcpy(params, &unk_100511A8, 0x40u);
 					return;
 				}
-				qmemcpy(a2, &flt_10438430, 0x40u);
+				qmemcpy(params, &flt_10438430, 0x40u);
 				break;
-			case 5890:
+			case GL_TEXTURE:
 				if (dword_10438C78[dword_100548CC])
 					goto LABEL_6;
-				qmemcpy(a2, &flt_10438C80[16 * dword_100548CC], 0x40u);
+				qmemcpy(params, &flt_10438C80[16 * dword_100548CC], 0x40u);
 				break;
 			default:
 				return;
@@ -39625,7 +39623,7 @@ void __cdecl sub_100330E0(int a1, float *a2)
 				dword_10439D88 = 0;
 				++dword_10437C24;
 				break;
-			case 5889:
+			case GL_PROJECTION:
 				if (dword_1043842C)
 				{
 					qmemcpy(&flt_10438430, a2, 0x40u);
@@ -39654,7 +39652,7 @@ void __cdecl sub_100330E0(int a1, float *a2)
 				dword_10439D88 = 0;
 				++dword_10438470;
 				break;
-			case 5890:
+			case GL_TEXTURE:
 				v2 = dword_100548CC;
 				if (dword_10438C78[dword_100548CC])
 				{
@@ -39853,7 +39851,7 @@ int *__cdecl sub_10033AA0(int a1, double *a2)
 				}
 				dword_10439D88 = 0;
 				return (int *)++dword_10437C24;
-			case 5889:
+			case GL_PROJECTION:
 				if (dword_1043842C)
 				{
 					v5 = *a2;
@@ -39898,7 +39896,7 @@ int *__cdecl sub_10033AA0(int a1, double *a2)
 					dword_10439D88 = 0;
 				}
 				return (int *)++dword_10438470;
-			case 5890:
+			case GL_TEXTURE:
 				v3 = dword_100548CC;
 				v4 = dword_100548CC << 6;
 				if (dword_10438C78[dword_100548CC])
@@ -40120,7 +40118,7 @@ int *__cdecl sub_10034600(int a1, float a2, float a3)
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
 	}
-	else if (a1 == 5889)
+	else if (a1 == GL_PROJECTION)
 	{
 		if (dword_1043842C)
 		{
@@ -40171,8 +40169,8 @@ int *__cdecl sub_10034600(int a1, float a2, float a3)
 	}
 	else
 	{
-		result = (int *)(a1 - 5890);
-		if (a1 == 5890)
+		result = (int *)(a1 - GL_TEXTURE);
+		if (a1 == GL_TEXTURE)
 		{
 			v4 = dword_100548CC;
 			v5 = dword_100548CC << 6;
@@ -40358,7 +40356,7 @@ int *__cdecl sub_10034BD0(int a1, float a2, float a3)
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
 	}
-	else if (a1 == 5889)
+	else if (a1 == GL_PROJECTION)
 	{
 		if (dword_1043842C)
 		{
@@ -40409,8 +40407,8 @@ int *__cdecl sub_10034BD0(int a1, float a2, float a3)
 	}
 	else
 	{
-		result = (int *)(a1 - 5890);
-		if (a1 == 5890)
+		result = (int *)(a1 - GL_TEXTURE);
+		if (a1 == GL_TEXTURE)
 		{
 			v4 = dword_100548CC;
 			v5 = dword_100548CC << 6;
@@ -40596,7 +40594,7 @@ int *__cdecl sub_100351A0(int a1, float a2, float a3)
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
 	}
-	else if (a1 == 5889)
+	else if (a1 == GL_PROJECTION)
 	{
 		if (dword_1043842C)
 		{
@@ -40647,8 +40645,8 @@ int *__cdecl sub_100351A0(int a1, float a2, float a3)
 	}
 	else
 	{
-		result = (int *)(a1 - 5890);
-		if (a1 == 5890)
+		result = (int *)(a1 - GL_TEXTURE);
+		if (a1 == GL_TEXTURE)
 		{
 			v4 = a3;
 			v5 = dword_100548CC;
@@ -40811,7 +40809,7 @@ int *__cdecl sub_10035760(int a1, float a2, float a3, float a4)
 			flt_10437C20 = flt_10437C10 * a4 + flt_10437C00 * a3 + flt_10437BF0 * a2 + flt_10437C20;
 		}
 	}
-	else if (a1 == 5889)
+	else if (a1 == GL_PROJECTION)
 	{
 		if (dword_1043842C)
 		{
@@ -40848,8 +40846,8 @@ int *__cdecl sub_10035760(int a1, float a2, float a3, float a4)
 	}
 	else
 	{
-		result = (int *)(a1 - 5890);
-		if (a1 == 5890)
+		result = (int *)(a1 - GL_TEXTURE);
+		if (a1 == GL_TEXTURE)
 		{
 			v5 = dword_100548CC;
 			v6 = dword_100548CC << 6;
@@ -40957,18 +40955,18 @@ int *__cdecl sub_10035760(int a1, float a2, float a3, float a4)
 // 10439D88: using guessed type int dword_10439D88;
 
 //----- (10035BD0) --------------------------------------------------------
-int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4)
+int *__cdecl WGL_SetScalef(GLenum pname, GLfloat x, GLfloat y, GLfloat z)
 {
 	int *result; // eax
 	int v5; // edx
 	int v6; // eax
 
-	if (a1 == GL_MODELVIEW)
+	if (pname == GL_MODELVIEW)
 	{
 		if (dword_10437BE0)
 		{
-			flt_10437BF8 = a3;
-			flt_10437BE4 = a2;
+			flt_10437BF8 = y;
+			flt_10437BE4 = x;
 			result = (int *)(dword_10437C24 + 1);
 			flt_10437BE8 = 0.0;
 			flt_10437BEC = 0.0;
@@ -40978,7 +40976,7 @@ int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4)
 			flt_10437C00 = 0.0;
 			flt_10437C04 = 0.0;
 			flt_10437C08 = 0.0;
-			flt_10437C0C = a4;
+			flt_10437C0C = z;
 			flt_10437C10 = 0.0;
 			flt_10437C14 = 0.0;
 			flt_10437C18 = 0.0;
@@ -40992,32 +40990,32 @@ int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4)
 		{
 			dword_10439D88 = 0;
 			result = (int *)++dword_10437C24;
-			flt_10437BE4 = flt_10437BE4 * a2;
-			flt_10437BE8 = flt_10437BE8 * a2;
-			flt_10437BEC = flt_10437BEC * a2;
-			flt_10437BF0 = flt_10437BF0 * a2;
-			flt_10437BF4 = flt_10437BF4 * a3;
-			flt_10437BF8 = flt_10437BF8 * a3;
-			flt_10437BFC = flt_10437BFC * a3;
-			flt_10437C00 = flt_10437C00 * a3;
-			flt_10437C04 = flt_10437C04 * a4;
-			flt_10437C08 = flt_10437C08 * a4;
-			flt_10437C0C = flt_10437C0C * a4;
-			flt_10437C10 = flt_10437C10 * a4;
+			flt_10437BE4 = flt_10437BE4 * x;
+			flt_10437BE8 = flt_10437BE8 * x;
+			flt_10437BEC = flt_10437BEC * x;
+			flt_10437BF0 = flt_10437BF0 * x;
+			flt_10437BF4 = flt_10437BF4 * y;
+			flt_10437BF8 = flt_10437BF8 * y;
+			flt_10437BFC = flt_10437BFC * y;
+			flt_10437C00 = flt_10437C00 * y;
+			flt_10437C04 = flt_10437C04 * z;
+			flt_10437C08 = flt_10437C08 * z;
+			flt_10437C0C = flt_10437C0C * z;
+			flt_10437C10 = flt_10437C10 * z;
 		}
 	}
-	else if (a1 == 5889)
+	else if (pname == GL_PROJECTION)
 	{
 		if (dword_1043842C)
 		{
-			flt_10438430 = a2;
-			flt_10438458 = a4;
+			flt_10438430 = x;
+			flt_10438458 = z;
 			result = (int *)(dword_10438470 + 1);
 			flt_10438434 = 0.0;
 			flt_10438438 = 0.0;
 			flt_1043843C = 0.0;
 			flt_10438440 = 0.0;
-			flt_10438444 = a3;
+			flt_10438444 = y;
 			flt_10438448 = 0.0;
 			flt_1043844C = 0.0;
 			flt_10438450 = 0.0;
@@ -41035,40 +41033,40 @@ int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4)
 		{
 			dword_10439D88 = 0;
 			result = (int *)++dword_10438470;
-			flt_10438430 = flt_10438430 * a2;
-			flt_10438434 = flt_10438434 * a2;
-			flt_10438438 = flt_10438438 * a2;
-			flt_1043843C = flt_1043843C * a2;
-			flt_10438440 = flt_10438440 * a3;
-			flt_10438444 = flt_10438444 * a3;
-			flt_10438448 = flt_10438448 * a3;
-			flt_1043844C = flt_1043844C * a3;
-			flt_10438450 = flt_10438450 * a4;
-			flt_10438454 = flt_10438454 * a4;
-			flt_10438458 = flt_10438458 * a4;
-			flt_1043845C = flt_1043845C * a4;
+			flt_10438430 = flt_10438430 * x;
+			flt_10438434 = flt_10438434 * x;
+			flt_10438438 = flt_10438438 * x;
+			flt_1043843C = flt_1043843C * x;
+			flt_10438440 = flt_10438440 * y;
+			flt_10438444 = flt_10438444 * y;
+			flt_10438448 = flt_10438448 * y;
+			flt_1043844C = flt_1043844C * y;
+			flt_10438450 = flt_10438450 * z;
+			flt_10438454 = flt_10438454 * z;
+			flt_10438458 = flt_10438458 * z;
+			flt_1043845C = flt_1043845C * z;
 		}
 	}
 	else
 	{
-		result = (int *)(a1 - 5890);
-		if (a1 == 5890)
+		result = (int *)(pname - GL_TEXTURE);
+		if (pname == GL_TEXTURE)
 		{
 			v5 = dword_100548CC;
 			v6 = dword_100548CC << 6;
 			if (dword_10438C78[dword_100548CC])
 			{
-				flt_10438C80[16 * dword_100548CC] = a2;
+				flt_10438C80[16 * dword_100548CC] = x;
 				*(float *)((char *)flt_10438C84 + v6) = 0.0;
 				*(float *)((char *)flt_10438C88 + v6) = 0.0;
 				*(float *)((char *)flt_10438C8C + v6) = 0.0;
 				*(float *)((char *)flt_10438C90 + v6) = 0.0;
-				*(float *)((char *)flt_10438C94 + v6) = a3;
+				*(float *)((char *)flt_10438C94 + v6) = y;
 				*(float *)((char *)flt_10438C98 + v6) = 0.0;
 				*(float *)((char *)flt_10438C9C + v6) = 0.0;
 				*(float *)((char *)flt_10438CA0 + v6) = 0.0;
 				*(float *)((char *)flt_10438CA4 + v6) = 0.0;
-				*(float *)((char *)flt_10438CA8 + v6) = a4;
+				*(float *)((char *)flt_10438CA8 + v6) = z;
 				*(float *)((char *)flt_10438CAC + v6) = 0.0;
 				*(float *)((char *)flt_10438CB0 + v6) = 0.0;
 				*(float *)((char *)flt_10438CB4 + v6) = 0.0;
@@ -41079,18 +41077,18 @@ int *__cdecl sub_10035BD0(int a1, float a2, float a3, float a4)
 			}
 			else
 			{
-				flt_10438C80[16 * dword_100548CC] = a2 * flt_10438C80[16 * dword_100548CC];
-				*(float *)((char *)flt_10438C84 + v6) = a2 * *(float *)((char *)flt_10438C84 + v6);
-				*(float *)((char *)flt_10438C88 + v6) = a2 * *(float *)((char *)flt_10438C88 + v6);
-				*(float *)((char *)flt_10438C8C + v6) = a2 * *(float *)((char *)flt_10438C8C + v6);
-				*(float *)((char *)flt_10438C90 + v6) = a3 * *(float *)((char *)flt_10438C90 + v6);
-				*(float *)((char *)flt_10438C94 + v6) = a3 * *(float *)((char *)flt_10438C94 + v6);
-				*(float *)((char *)flt_10438C98 + v6) = a3 * *(float *)((char *)flt_10438C98 + v6);
-				*(float *)((char *)flt_10438C9C + v6) = a3 * *(float *)((char *)flt_10438C9C + v6);
-				*(float *)((char *)flt_10438CA0 + v6) = a4 * *(float *)((char *)flt_10438CA0 + v6);
-				*(float *)((char *)flt_10438CA4 + v6) = a4 * *(float *)((char *)flt_10438CA4 + v6);
-				*(float *)((char *)flt_10438CA8 + v6) = a4 * *(float *)((char *)flt_10438CA8 + v6);
-				*(float *)((char *)flt_10438CAC + v6) = a4 * *(float *)((char *)flt_10438CAC + v6);
+				flt_10438C80[16 * dword_100548CC] = x * flt_10438C80[16 * dword_100548CC];
+				*(float *)((char *)flt_10438C84 + v6) = x * *(float *)((char *)flt_10438C84 + v6);
+				*(float *)((char *)flt_10438C88 + v6) = x * *(float *)((char *)flt_10438C88 + v6);
+				*(float *)((char *)flt_10438C8C + v6) = x * *(float *)((char *)flt_10438C8C + v6);
+				*(float *)((char *)flt_10438C90 + v6) = y * *(float *)((char *)flt_10438C90 + v6);
+				*(float *)((char *)flt_10438C94 + v6) = y * *(float *)((char *)flt_10438C94 + v6);
+				*(float *)((char *)flt_10438C98 + v6) = y * *(float *)((char *)flt_10438C98 + v6);
+				*(float *)((char *)flt_10438C9C + v6) = y * *(float *)((char *)flt_10438C9C + v6);
+				*(float *)((char *)flt_10438CA0 + v6) = z * *(float *)((char *)flt_10438CA0 + v6);
+				*(float *)((char *)flt_10438CA4 + v6) = z * *(float *)((char *)flt_10438CA4 + v6);
+				*(float *)((char *)flt_10438CA8 + v6) = z * *(float *)((char *)flt_10438CA8 + v6);
+				*(float *)((char *)flt_10438CAC + v6) = z * *(float *)((char *)flt_10438CAC + v6);
 				result = &dword_10438D00[v5];
 			}
 			++ *result;
