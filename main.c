@@ -16,6 +16,8 @@
 
 #define __thiscall __cdecl // Test compile in C mode
 
+#define PRESS_C_TO_CONTINUE_STARTUP /* FS: Comment out for patched driver that skips the press C to continue startup crap. */
+
 int sub_10001020();
 // void __cdecl unknown_libname_1(); idb
 LSTATUS __cdecl sub_10001050(int a1);
@@ -322,10 +324,10 @@ int __thiscall sub_10032C40(_DWORD *this);
 unsigned int __thiscall sub_10032C60(unsigned int *this, unsigned int a2, unsigned int a3, unsigned int a4);
 int __thiscall sub_10032D30(char *this, int a2, int a3, int a4, int a5, int a6, int a7);
 int __cdecl sub_10032DE0(int a1, int a2, unsigned int a3);
-int __cdecl sub_10032ED0(int a1);
+int __cdecl WGL_LoadIdentity(GLenum pname);
 void __cdecl sub_10032FB0(int a1, const void *a2);
 void __cdecl WGL_GetMatrixMode_Params(GLenum pname, GLfloat *params);
-void __cdecl sub_100330E0(int a1, float *a2);
+void __cdecl WGL_MultiplyCurrentMatrix(GLenum pname, GLfloat *m);
 int *__cdecl sub_10033AA0(int a1, double *a2);
 int *__cdecl sub_10034600(int a1, float a2, float a3);
 int *__cdecl sub_10034BD0(int a1, float a2, float a3);
@@ -414,7 +416,7 @@ char *__cdecl sub_10037094(char *VarName);
 // int sprintf(char *const Buffer, const char *const Format, ...);
 // char *__cdecl _strupr(char *String);
 void *__cdecl sub_10037A5E(LPVOID lpMem, SIZE_T dwBytes);
-SIZE_T __cdecl sub_10037D8D(_DWORD *lpMem);
+SIZE_T __cdecl sub_10037D8D(_DWORD *lpMem); /* FS: UNUSED: Exception Handler. */
 // void __cdecl _lock_file(FILE *Stream);
 // void __cdecl _unlock_file(FILE *Stream);
 int sub_10038170();
@@ -501,8 +503,9 @@ char byte_10046069[] = { '\0' }; // weak
 char byte_1004606A[] = { '\0' }; // weak
 char WGL_ROTATING_BANNER[] =
 {
-#include "banner.h"
-}; // weak
+#include "banner.h";
+}
+// weak
 _UNKNOWN unk_1004E068; // weak
 int dword_1004F068 = 65535; // weak
 int dword_1004F06C = 1; // weak
@@ -534,7 +537,11 @@ CHAR aWickedglTcCach[] = "WickedGL_TC_Cache_Hits"; // idb
 CHAR aWickedglTcCach_0[] = "WickedGL_TC_Cache_Miss"; // idb
 CHAR aWickedglAnimat[] = "WickedGL_Animated_Tex_Cnt"; // idb
 CHAR aWickedglAvgCom[] = "WickedGL_Avg_Compress_Err"; // idb
+#ifdef PRESS_C_TO_CONTINUE_STARTUP
+char aMetabyteWicked[18] = "METABYTE/QICKED3D"; // weak
+#else
 char aMetabyteWicked[18] = "METABYTE/WICKED3D"; // weak
+#endif
 const char WGL_RENDERER_STR_V2[] = "3Dfx Interactive Voodoo2(tm)"; // weak
 const char WGL_RENDERER_STR_V5[] = "3Dfx Interactive Voodoo5(tm)"; // weak
 const char WGL_RENDERER_STR_V3[] = "3Dfx Interactive Voodoo3(tm)"; // weak
@@ -1816,7 +1823,7 @@ int sub_100019C0()
 			if (dword_1007CAB8[93 * texture])
 			{
 				dword_100548E0 = 0;
-				qmemcpy(tablepartial_data, (const void *)dword_1007CAB8[93 * texture], 0x400u);
+				memcpy(tablepartial_data, (const void *)dword_1007CAB8[93 * texture], 0x400u);
 				v12 = dword_1007CABC[93 * texture];
 				dword_104373C4 = 1;
 				dword_10437BC8 = v12;
@@ -1889,7 +1896,7 @@ int sub_100019C0()
 	if (*(int *)((char *)dword_1007CAB8 + result))
 	{
 		dword_100548E0 = 0;
-		qmemcpy(tablepartial_data, *(const void **)((char *)dword_1007CAB8 + result), 0x400u);
+		memcpy(tablepartial_data, *(const void **)((char *)dword_1007CAB8 + result), 0x400u);
 		v10 = *(int *)((char *)dword_1007CABC + result);
 		dword_104373C4 = 1;
 		dword_10437BC8 = v10;
@@ -1948,7 +1955,7 @@ LABEL_54:
 				if (dword_1007CAB8[93 * dword_100548D4])
 				{
 					dword_100548E0 = 1;
-					qmemcpy(tablepartial_data, (const void *)dword_1007CAB8[93 * dword_100548D4], 0x400u);
+					memcpy(tablepartial_data, (const void *)dword_1007CAB8[93 * dword_100548D4], 0x400u);
 					v17 = dword_1007CABC[93 * dword_100548D4];
 					dword_104373C4 = 1;
 					dword_10437BC8 = v17;
@@ -1990,7 +1997,7 @@ LABEL_54:
 				dword_100548E0 = 1;
 				v16 = *(const void **)((char *)dword_1007CAB8 + result);
 				result = *(int *)((char *)dword_1007CABC + result);
-				qmemcpy(tablepartial_data, v16, 0x400u);
+				memcpy(tablepartial_data, v16, 0x400u);
 				dword_10437BC8 = result;
 				dword_104373C4 = 1;
 			}
@@ -2310,7 +2317,7 @@ LABEL_148:
 				return result;
 		}
 		result = grTexDownloadTablePartial((dword_10437BC8 != 0) + 2, tablepartial_data, result, v22);
-		qmemcpy(dword_104377C8, tablepartial_data, 0x400u);
+		memcpy(dword_104377C8, tablepartial_data, 0x400u);
 	}
 	return result;
 }
@@ -4037,7 +4044,7 @@ void __stdcall glColorTableEXT(int a1, int a2, int a3, int a4, int a5, int a6)
 			if (!dword_1007CAB8[93 * *(&texture + dword_100548CC)])
 				dword_1007CAB8[93 * *(&texture + dword_100548CC)] = (int)malloc(0x400u);
 			v11 = 93 * *(&texture + dword_100548CC);
-			qmemcpy((void *)dword_1007CAB8[v11], tablepartial_data, 0x400u);
+			memcpy((void *)dword_1007CAB8[v11], tablepartial_data, 0x400u);
 			dword_1007CABC[v11] = dword_10437BC8;
 		}
 	}
@@ -4120,7 +4127,7 @@ GLuint __stdcall glColorSubTableEXT(GLuint a1, int a2, int a3, int a4, int a5, G
 			if (!dword_1007CAB8[93 * *(&texture + dword_100548CC)])
 				dword_1007CAB8[93 * *(&texture + dword_100548CC)] = (int)malloc(0x400u);
 			result = 372 * *(&texture + dword_100548CC);
-			qmemcpy(*(void **)((char *)dword_1007CAB8 + result), tablepartial_data, 0x400u);
+			memcpy(*(void **)((char *)dword_1007CAB8 + result), tablepartial_data, 0x400u);
 			*(int *)((char *)dword_1007CABC + result) = dword_10437BC8;
 		}
 	}
@@ -6154,7 +6161,7 @@ void __stdcall glFrustum(GLdouble left, GLdouble right, GLdouble bottom, GLdoubl
 	v7[9] = (bottom + top) / v6;
 	v7[10] = -((zNear + zFar) / (zFar - zNear));
 	v7[14] = zNear * zFar * -2.0 / (zFar - zNear);
-	sub_100330E0(WGL_CURRENT_MATRIXMODE, v7);
+	WGL_MultiplyCurrentMatrix(WGL_CURRENT_MATRIXMODE, v7);
 }
 
 //----- (100072A0) --------------------------------------------------------
@@ -6642,7 +6649,7 @@ GLboolean __stdcall glIsTexture(GLuint texture)
 //----- (10007CE0) --------------------------------------------------------
 void __stdcall glLoadIdentity()
 {
-	sub_10032ED0(WGL_CURRENT_MATRIXMODE);
+	WGL_LoadIdentity(WGL_CURRENT_MATRIXMODE);
 }
 
 //----- (10007CF0) --------------------------------------------------------
@@ -7076,7 +7083,7 @@ void __stdcall glMultMatrixd(const GLdouble *m)
 //----- (10008520) --------------------------------------------------------
 void __stdcall glMultMatrixf(const GLfloat *m)
 {
-	sub_100330E0(WGL_CURRENT_MATRIXMODE, (float *)m);
+	WGL_MultiplyCurrentMatrix(WGL_CURRENT_MATRIXMODE, (float *)m);
 }
 
 //----- (10008540) --------------------------------------------------------
@@ -7185,7 +7192,7 @@ void __stdcall glOrtho(GLdouble left, GLdouble right, GLdouble bottom, GLdouble 
 	v6[13] = -((bottom + top) / (top - bottom));
 	v6[10] = -2.0 / (zFar - zNear);
 	v6[14] = -((zNear + zFar) / (zFar - zNear));
-	sub_100330E0(WGL_CURRENT_MATRIXMODE, v6);
+	WGL_MultiplyCurrentMatrix(WGL_CURRENT_MATRIXMODE, v6);
 }
 
 //----- (10008860) --------------------------------------------------------
@@ -7807,7 +7814,7 @@ LABEL_73:
 					goto LABEL_146;
 			}
 			grTexDownloadTablePartial((dword_10437BC8 != 0) + 2, tablepartial_data, start, end);
-			qmemcpy(dword_104377C8, tablepartial_data, 0x400u);
+			memcpy(dword_104377C8, tablepartial_data, 0x400u);
 		}
 		goto LABEL_146;
 	}
@@ -8188,7 +8195,7 @@ void __stdcall glRotatef(GLfloat angle, GLfloat x, GLfloat y, GLfloat z)
 			v16[7] = 0.0;
 			memset(&v16[11], 0, 16);
 			v16[15] = 1.0;
-			sub_100330E0(WGL_CURRENT_MATRIXMODE, v16);
+			WGL_MultiplyCurrentMatrix(WGL_CURRENT_MATRIXMODE, v16);
 		}
 	}
 }
@@ -15686,7 +15693,7 @@ LABEL_73:
 	if (v52)
 	{
 		++ *(_DWORD *)&dword_10437108;
-		qmemcpy(lpMema, v52, v51);
+		memcpy(lpMema, v52, v51);
 		v71 = *(float *)(v22 + 20);
 	}
 	else
@@ -15695,7 +15702,7 @@ LABEL_73:
 		v71 = sub_1000D880((int *)lpMema, (int)a3, a4, v13, v70, (_DWORD *)(v22 + 4));
 		v53 = (char *)malloc(v51);
 		*(_DWORD *)(v22 + 16) = v53;
-		qmemcpy(v53, lpMema, v51);
+		memcpy(v53, lpMema, v51);
 		v54 = dword_10437114;
 		v55 = *(_DWORD *)&dword_10437104;
 		*(float *)(v22 + 20) = v71;
@@ -25390,9 +25397,9 @@ int Draw_GL_POINT()
 			LODWORD(flt_1042D07C) = dword_1042D05C;
 		if (SLODWORD(flt_1042D07C) >= 1056964608)
 		{
-			qmemcpy(&GLIDE_TRIANGLE_V0, v0, 0x30u);
-			qmemcpy(&GLIDE_TRIANGLE_V1, (const void *)dword_103649F0, 0x30u);
-			qmemcpy(&GLIDE_TRIANGLE_V2, (const void *)dword_103649F0, 0x30u);
+			memcpy(&GLIDE_TRIANGLE_V0, v0, 0x30u);
+			memcpy(&GLIDE_TRIANGLE_V1, (const void *)dword_103649F0, 0x30u);
+			memcpy(&GLIDE_TRIANGLE_V2, (const void *)dword_103649F0, 0x30u);
 			if (SLODWORD(flt_1042D07C) >= 1069547520)
 			{
 				if (SLODWORD(flt_1042D07C) >= 0x40000000)
@@ -32061,11 +32068,13 @@ LABEL_38:
 	QueryPerformanceFrequency(&Frequency);
 	QueryPerformanceCounter(&PerformanceCount);
 	PerformanceCount.QuadPart += 2 * Frequency.QuadPart;
+#ifdef PRESS_C_TO_CONTINUE_STARTUP
 	do
 	{
 		Sleep(0xAu);
 		QueryPerformanceCounter(&v130);
 	} while (v130.QuadPart < PerformanceCount.QuadPart);
+#endif // PRESS_C_TO_CONTINUE_STARTUP
 	v33 = aPressCToContin;
 	v34 = height / 2 + 48;
 	v100 = v34;
@@ -32114,10 +32123,12 @@ LABEL_38:
 		v114 = ++v33;
 		v93 += 18;
 	} while (v33);
+#ifdef PRESS_C_TO_CONTINUE_STARTUP
 	while (!GetAsyncKeyState(67))
 		;
 	while (GetAsyncKeyState(67))
 		;
+#endif // PRESS_C_TO_CONTINUE_STARTUP
 	grRenderBuffer(GR_BUFFER_FRONTBUFFER);
 	grColorMask(1, 0);
 	grDepthMask(0);
@@ -34938,12 +34949,12 @@ int sub_1002D2D0()
 		WGL_CURRENT_MATRIXMODE = GL_PROJECTION;
 		v19 = (float *)((char *)&unk_10438474 + 64 * (dword_10438C74++ & 0x1F));
 		WGL_GetMatrixMode_Params(GL_PROJECTION, v19);
-		sub_10032ED0(WGL_CURRENT_MATRIXMODE);
+		WGL_LoadIdentity(WGL_CURRENT_MATRIXMODE);
 		glOrtho(0.0, 512.0, 384.0, 0.0, -99999.0, 99999.0);
 		WGL_CURRENT_MATRIXMODE = 5888;
 		v20 = (float *)((char *)&unk_10437C28 + 64 * (dword_10438428++ & 0x1F));
 		WGL_GetMatrixMode_Params(GL_MODELVIEW, v20);
-		sub_10032ED0(WGL_CURRENT_MATRIXMODE);
+		WGL_LoadIdentity(WGL_CURRENT_MATRIXMODE);
 		v27 = dword_10054840;
 		glDisable(GL_DEPTH_TEST);
 		v28 = dword_100548B8;
@@ -37715,7 +37726,7 @@ int *__cdecl sub_10030D10(int a1, int a2, int a3)
 		dword_104373C4 = 0;
 		dword_10437BC8 = 0;
 		memset(tablepartial_data, 0, 0x400u);
-		qmemcpy(dword_104377C8, tablepartial_data, 0x400u);
+		memcpy(dword_104377C8, tablepartial_data, 0x400u);
 		return 0;
 	}
 	else
@@ -38372,7 +38383,7 @@ _DWORD *__thiscall sub_10031D50(_DWORD *this, int a2, int a3, const void *a4, in
 	*(this + 69) = a2;
 	*this = a3;
 	*(this + 8) = 0;
-	qmemcpy(this + 1, a4, 0x14u);
+	memcpy(this + 1, a4, 0x14u);
 	*(this + 7) = a6;
 	*(this + 6) = a5;
 	v7 = this + 9;
@@ -38396,12 +38407,12 @@ unsigned int *__thiscall sub_10031DA0(int this)
 	result = sub_10031940(*(_DWORD **)(this + 276), *(_DWORD *)this, this + 4, *(_DWORD *)(this + 24));
 	if ((const void *)dword_104372F4 == v1)
 	{
-		qmemcpy(&unk_104372F8, v1, 0x14u);
+		memcpy(&unk_104372F8, v1, 0x14u);
 		dword_104372F4 = (int)&unk_104372F8;
 	}
 	if ((const void *)dword_104372AC == v1)
 	{
-		qmemcpy(&unk_104372B0, v1, 0x14u);
+		memcpy(&unk_104372B0, v1, 0x14u);
 		dword_104372AC = (int)&unk_104372B0;
 	}
 	return result;
@@ -38460,12 +38471,12 @@ void __thiscall sub_10031E50(_DWORD *this)
 				sub_10031940(*(_DWORD **)(v1 + 276), *(_DWORD *)v1, v1 + 4, *(_DWORD *)(v1 + 24));
 				if (dword_104372F4 == v1 + 4)
 				{
-					qmemcpy(&unk_104372F8, v3, 0x14u);
+					memcpy(&unk_104372F8, v3, 0x14u);
 					dword_104372F4 = (int)&unk_104372F8;
 				}
 				if ((const void *)dword_104372AC == v3)
 				{
-					qmemcpy(&unk_104372B0, v3, 0x14u);
+					memcpy(&unk_104372B0, v3, 0x14u);
 					dword_104372AC = (int)&unk_104372B0;
 				}
 				sub_10036A96((LPVOID)v1);
@@ -38525,12 +38536,12 @@ void __thiscall sub_10031F00(unsigned int *this, int a2)
 			sub_10031940(*(_DWORD **)(v7 + 276), *(_DWORD *)v7, v7 + 4, *(_DWORD *)(v7 + 24));
 			if (dword_104372F4 == v7 + 4)
 			{
-				qmemcpy(&unk_104372F8, v9, 0x14u);
+				memcpy(&unk_104372F8, v9, 0x14u);
 				dword_104372F4 = (int)&unk_104372F8;
 			}
 			if ((const void *)dword_104372AC == v9)
 			{
-				qmemcpy(&unk_104372B0, v9, 0x14u);
+				memcpy(&unk_104372B0, v9, 0x14u);
 				dword_104372AC = (int)&unk_104372B0;
 			}
 			sub_10036A96((LPVOID)v7);
@@ -38971,7 +38982,7 @@ LABEL_123:
 	{
 		result[69] = (int)v12;
 		*result = v35;
-		qmemcpy(result + 1, v36, 0x14u);
+		memcpy(result + 1, v36, 0x14u);
 		result[7] = a2;
 		result[6] = a3;
 		result[8] = 0;
@@ -39039,14 +39050,14 @@ LABEL_16:
 					sub_10031940(*(_DWORD **)(v5 + 276), *(_DWORD *)v5, v5 + 4, *(_DWORD *)(v5 + 24));
 					if (dword_104372F4 == v5 + 4)
 					{
-						qmemcpy(&unk_104372F8, v7, 0x14u);
+						memcpy(&unk_104372F8, v7, 0x14u);
 						v4 = (int)v8;
 						v2 = a2;
 						dword_104372F4 = (int)&unk_104372F8;
 					}
 					if ((const void *)dword_104372AC == v7)
 					{
-						qmemcpy(&unk_104372B0, v7, 0x14u);
+						memcpy(&unk_104372B0, v7, 0x14u);
 						v4 = (int)v8;
 						v2 = a2;
 						dword_104372AC = (int)&unk_104372B0;
@@ -39389,15 +39400,15 @@ int __cdecl sub_10032DE0(int a1, int a2, unsigned int a3)
 	double v4; // st7
 
 	dword_10437BE0 = 1;
-	qmemcpy(&flt_10437BE4, &unk_100511A8, 0x40u);
+	memcpy(&flt_10437BE4, &unk_100511A8, 0x40u);
 	dword_10438428 = 0;
 	dword_1043842C = 1;
-	qmemcpy(&flt_10438430, &unk_100511A8, 0x40u);
+	memcpy(&flt_10438430, &unk_100511A8, 0x40u);
 	dword_10438C74 = 0;
 	dword_10438C7C = 1;
 	dword_10438C78[0] = 1;
-	qmemcpy(&flt_10438CC0, &unk_100511A8, 0x40u);
-	qmemcpy(flt_10438C80, &unk_100511A8, 0x40u);
+	memcpy(&flt_10438CC0, &unk_100511A8, 0x40u);
+	memcpy(flt_10438C80, &unk_100511A8, 0x40u);
 	flt_10439D18 = (float)a1;
 	flt_10439D1C = (float)a2;
 	flt_10439D28 = flt_10439D18;
@@ -39439,29 +39450,29 @@ int __cdecl sub_10032DE0(int a1, int a2, unsigned int a3)
 // 10439D88: using guessed type int dword_10439D88;
 
 //----- (10032ED0) --------------------------------------------------------
-int __cdecl sub_10032ED0(int a1)
+int __cdecl WGL_LoadIdentity(GLenum pname)
 {
 	int result; // eax
 	float *v2; // edi
 
-	if (a1 == GL_MODELVIEW)
+	if (pname == GL_MODELVIEW)
 	{
 		result = dword_10437BE0;
 		if (!dword_10437BE0)
 		{
 			dword_10437BE0 = 1;
-			qmemcpy(&flt_10437BE4, &unk_100511A8, 0x40u);
+			memcpy(&flt_10437BE4, &unk_100511A8, 0x40u);
 			dword_10439D88 = 0;
 			return ++dword_10437C24;
 		}
 	}
-	else if (a1 == GL_PROJECTION)
+	else if (pname == GL_PROJECTION)
 	{
 		result = dword_1043842C;
 		if (!dword_1043842C)
 		{
 			dword_1043842C = 1;
-			qmemcpy(&flt_10438430, &unk_100511A8, 0x40u);
+			memcpy(&flt_10438430, &unk_100511A8, 0x40u);
 			result = dword_10438470 + 1;
 			dword_10439D88 = 0;
 			++dword_10438470;
@@ -39469,15 +39480,15 @@ int __cdecl sub_10032ED0(int a1)
 	}
 	else
 	{
-		result = a1 - GL_TEXTURE;
-		if (a1 == GL_TEXTURE)
+		result = pname - GL_TEXTURE;
+		if (pname == GL_TEXTURE)
 		{
 			result = dword_100548CC;
 			if (!dword_10438C78[dword_100548CC])
 			{
 				v2 = &flt_10438C80[16 * dword_100548CC];
 				dword_10438C78[dword_100548CC] = 1;
-				qmemcpy(v2, &unk_100511A8, 0x40u);
+				memcpy(v2, &unk_100511A8, 0x40u);
 				++dword_10438D00[result];
 			}
 		}
@@ -39508,13 +39519,13 @@ void __cdecl sub_10032FB0(int a1, const void *a2)
 		{
 			case GL_MODELVIEW:
 				dword_10437BE0 = 0;
-				qmemcpy(&flt_10437BE4, a2, 0x40u);
+				memcpy(&flt_10437BE4, a2, 0x40u);
 				dword_10439D88 = 0;
 				++dword_10437C24;
 				break;
 			case GL_PROJECTION:
 				dword_1043842C = 0;
-				qmemcpy(&flt_10438430, a2, 0x40u);
+				memcpy(&flt_10438430, a2, 0x40u);
 				dword_10439D88 = 0;
 				++dword_10438470;
 				break;
@@ -39522,7 +39533,7 @@ void __cdecl sub_10032FB0(int a1, const void *a2)
 				v2 = dword_100548CC;
 				v3 = dword_100548CC << 6;
 				dword_10438C78[dword_100548CC] = 0;
-				qmemcpy((char *)flt_10438C80 + v3, a2, 0x40u);
+				memcpy((char *)flt_10438C80 + v3, a2, 0x40u);
 				++dword_10438D00[v2];
 				break;
 		}
@@ -39553,21 +39564,21 @@ void __cdecl WGL_GetMatrixMode_Params(GLenum pname, GLfloat *params)
 				v2 = (float *)&unk_100511A8;
 				if (!dword_10437BE0)
 					v2 = &flt_10437BE4;
-				qmemcpy(params, v2, 0x40u);
+				memcpy(params, v2, 0x40u);
 				break;
 			case GL_PROJECTION:
 				if (dword_1043842C)
 				{
 LABEL_6:
-					qmemcpy(params, &unk_100511A8, 0x40u);
+					memcpy(params, &unk_100511A8, 0x40u);
 					return;
 				}
-				qmemcpy(params, &flt_10438430, 0x40u);
+				memcpy(params, &flt_10438430, 0x40u);
 				break;
 			case GL_TEXTURE:
 				if (dword_10438C78[dword_100548CC])
 					goto LABEL_6;
-				qmemcpy(params, &flt_10438C80[16 * dword_100548CC], 0x40u);
+				memcpy(params, &flt_10438C80[16 * dword_100548CC], 0x40u);
 				break;
 			default:
 				return;
@@ -39583,42 +39594,42 @@ LABEL_6:
 // 10438C80: using guessed type float flt_10438C80[];
 
 //----- (100330E0) --------------------------------------------------------
-void __cdecl sub_100330E0(int a1, float *a2)
+void __cdecl WGL_MultiplyCurrentMatrix(GLenum pname, GLfloat *m)
 {
 	int v2; // edx
 	int *v3; // eax
 	float *v4; // edi
 	float v5[16]; // [esp+Ch] [ebp-40h] BYREF
 
-	if (a2)
+	if (m)
 	{
-		switch (a1)
+		switch (pname)
 		{
 			case GL_MODELVIEW:
 				if (dword_10437BE0)
 				{
-					qmemcpy(&flt_10437BE4, a2, 0x40u);
+					memcpy(&flt_10437BE4, m, 0x40u);
 					dword_10437BE0 = 0;
 				}
 				else
 				{
-					v5[0] = flt_10437C04 * a2[2] + flt_10437BF4 * a2[1] + flt_10437BE4 * *a2 + flt_10437C14 * a2[3];
-					v5[1] = flt_10437C08 * a2[2] + flt_10437BF8 * a2[1] + flt_10437BE8 * *a2 + flt_10437C18 * a2[3];
-					v5[2] = flt_10437C0C * a2[2] + flt_10437BFC * a2[1] + flt_10437BEC * *a2 + flt_10437C1C * a2[3];
-					v5[3] = flt_10437C10 * a2[2] + flt_10437C00 * a2[1] + flt_10437BF0 * *a2 + flt_10437C20 * a2[3];
-					v5[4] = flt_10437BE4 * a2[4] + flt_10437BF4 * a2[5] + flt_10437C14 * a2[7] + flt_10437C04 * a2[6];
-					v5[5] = flt_10437BE8 * a2[4] + flt_10437BF8 * a2[5] + flt_10437C18 * a2[7] + flt_10437C08 * a2[6];
-					v5[6] = flt_10437BEC * a2[4] + flt_10437BFC * a2[5] + flt_10437C1C * a2[7] + flt_10437C0C * a2[6];
-					v5[7] = flt_10437BF0 * a2[4] + flt_10437C00 * a2[5] + flt_10437C20 * a2[7] + flt_10437C10 * a2[6];
-					v5[8] = flt_10437BE4 * a2[8] + flt_10437BF4 * a2[9] + flt_10437C14 * a2[11] + flt_10437C04 * a2[10];
-					v5[9] = flt_10437BE8 * a2[8] + flt_10437BF8 * a2[9] + flt_10437C18 * a2[11] + flt_10437C08 * a2[10];
-					v5[10] = flt_10437BEC * a2[8] + flt_10437BFC * a2[9] + flt_10437C1C * a2[11] + flt_10437C0C * a2[10];
-					v5[11] = flt_10437BF0 * a2[8] + flt_10437C00 * a2[9] + flt_10437C20 * a2[11] + flt_10437C10 * a2[10];
-					v5[12] = flt_10437BE4 * a2[12] + flt_10437BF4 * a2[13] + flt_10437C14 * a2[15] + flt_10437C04 * a2[14];
-					v5[13] = flt_10437BE8 * a2[12] + flt_10437BF8 * a2[13] + flt_10437C18 * a2[15] + flt_10437C08 * a2[14];
-					v5[14] = flt_10437BEC * a2[12] + flt_10437BFC * a2[13] + flt_10437C1C * a2[15] + flt_10437C0C * a2[14];
-					v5[15] = flt_10437BF0 * a2[12] + flt_10437C00 * a2[13] + flt_10437C20 * a2[15] + flt_10437C10 * a2[14];
-					qmemcpy(&flt_10437BE4, v5, 0x40u);
+					v5[0] = flt_10437C04 * m[2] + flt_10437BF4 * m[1] + flt_10437BE4 * *m + flt_10437C14 * m[3];
+					v5[1] = flt_10437C08 * m[2] + flt_10437BF8 * m[1] + flt_10437BE8 * *m + flt_10437C18 * m[3];
+					v5[2] = flt_10437C0C * m[2] + flt_10437BFC * m[1] + flt_10437BEC * *m + flt_10437C1C * m[3];
+					v5[3] = flt_10437C10 * m[2] + flt_10437C00 * m[1] + flt_10437BF0 * *m + flt_10437C20 * m[3];
+					v5[4] = flt_10437BE4 * m[4] + flt_10437BF4 * m[5] + flt_10437C14 * m[7] + flt_10437C04 * m[6];
+					v5[5] = flt_10437BE8 * m[4] + flt_10437BF8 * m[5] + flt_10437C18 * m[7] + flt_10437C08 * m[6];
+					v5[6] = flt_10437BEC * m[4] + flt_10437BFC * m[5] + flt_10437C1C * m[7] + flt_10437C0C * m[6];
+					v5[7] = flt_10437BF0 * m[4] + flt_10437C00 * m[5] + flt_10437C20 * m[7] + flt_10437C10 * m[6];
+					v5[8] = flt_10437BE4 * m[8] + flt_10437BF4 * m[9] + flt_10437C14 * m[11] + flt_10437C04 * m[10];
+					v5[9] = flt_10437BE8 * m[8] + flt_10437BF8 * m[9] + flt_10437C18 * m[11] + flt_10437C08 * m[10];
+					v5[10] = flt_10437BEC * m[8] + flt_10437BFC * m[9] + flt_10437C1C * m[11] + flt_10437C0C * m[10];
+					v5[11] = flt_10437BF0 * m[8] + flt_10437C00 * m[9] + flt_10437C20 * m[11] + flt_10437C10 * m[10];
+					v5[12] = flt_10437BE4 * m[12] + flt_10437BF4 * m[13] + flt_10437C14 * m[15] + flt_10437C04 * m[14];
+					v5[13] = flt_10437BE8 * m[12] + flt_10437BF8 * m[13] + flt_10437C18 * m[15] + flt_10437C08 * m[14];
+					v5[14] = flt_10437BEC * m[12] + flt_10437BFC * m[13] + flt_10437C1C * m[15] + flt_10437C0C * m[14];
+					v5[15] = flt_10437BF0 * m[12] + flt_10437C00 * m[13] + flt_10437C20 * m[15] + flt_10437C10 * m[14];
+					memcpy(&flt_10437BE4, v5, 0x40u);
 				}
 				dword_10439D88 = 0;
 				++dword_10437C24;
@@ -39626,28 +39637,28 @@ void __cdecl sub_100330E0(int a1, float *a2)
 			case GL_PROJECTION:
 				if (dword_1043842C)
 				{
-					qmemcpy(&flt_10438430, a2, 0x40u);
+					memcpy(&flt_10438430, m, 0x40u);
 					dword_1043842C = 0;
 				}
 				else
 				{
-					v5[0] = flt_10438450 * a2[2] + flt_10438440 * a2[1] + flt_10438430 * *a2 + flt_10438460 * a2[3];
-					v5[1] = flt_10438454 * a2[2] + flt_10438444 * a2[1] + flt_10438434 * *a2 + flt_10438464 * a2[3];
-					v5[2] = flt_10438458 * a2[2] + flt_10438448 * a2[1] + flt_10438438 * *a2 + flt_10438468 * a2[3];
-					v5[3] = flt_1043843C * *a2 + flt_1043846C * a2[3] + flt_1043845C * a2[2] + flt_1043844C * a2[1];
-					v5[4] = flt_10438430 * a2[4] + flt_10438440 * a2[5] + flt_10438460 * a2[7] + flt_10438450 * a2[6];
-					v5[5] = flt_10438434 * a2[4] + flt_10438444 * a2[5] + flt_10438464 * a2[7] + flt_10438454 * a2[6];
-					v5[6] = flt_10438438 * a2[4] + flt_10438448 * a2[5] + flt_10438468 * a2[7] + flt_10438458 * a2[6];
-					v5[7] = flt_1043844C * a2[5] + flt_1043846C * a2[7] + flt_1043845C * a2[6] + flt_1043843C * a2[4];
-					v5[8] = flt_10438430 * a2[8] + flt_10438440 * a2[9] + flt_10438460 * a2[11] + flt_10438450 * a2[10];
-					v5[9] = flt_10438434 * a2[8] + flt_10438444 * a2[9] + flt_10438464 * a2[11] + flt_10438454 * a2[10];
-					v5[10] = flt_10438438 * a2[8] + flt_10438448 * a2[9] + flt_10438468 * a2[11] + flt_10438458 * a2[10];
-					v5[11] = flt_1043844C * a2[9] + flt_1043846C * a2[11] + flt_1043845C * a2[10] + flt_1043843C * a2[8];
-					v5[12] = flt_10438430 * a2[12] + flt_10438440 * a2[13] + flt_10438460 * a2[15] + flt_10438450 * a2[14];
-					v5[13] = flt_10438434 * a2[12] + flt_10438444 * a2[13] + flt_10438464 * a2[15] + flt_10438454 * a2[14];
-					v5[14] = flt_10438438 * a2[12] + flt_10438448 * a2[13] + flt_10438468 * a2[15] + flt_10438458 * a2[14];
-					v5[15] = flt_1043844C * a2[13] + flt_1043846C * a2[15] + flt_1043845C * a2[14] + flt_1043843C * a2[12];
-					qmemcpy(&flt_10438430, v5, 0x40u);
+					v5[0] = flt_10438450 * m[2] + flt_10438440 * m[1] + flt_10438430 * *m + flt_10438460 * m[3];
+					v5[1] = flt_10438454 * m[2] + flt_10438444 * m[1] + flt_10438434 * *m + flt_10438464 * m[3];
+					v5[2] = flt_10438458 * m[2] + flt_10438448 * m[1] + flt_10438438 * *m + flt_10438468 * m[3];
+					v5[3] = flt_1043843C * *m + flt_1043846C * m[3] + flt_1043845C * m[2] + flt_1043844C * m[1];
+					v5[4] = flt_10438430 * m[4] + flt_10438440 * m[5] + flt_10438460 * m[7] + flt_10438450 * m[6];
+					v5[5] = flt_10438434 * m[4] + flt_10438444 * m[5] + flt_10438464 * m[7] + flt_10438454 * m[6];
+					v5[6] = flt_10438438 * m[4] + flt_10438448 * m[5] + flt_10438468 * m[7] + flt_10438458 * m[6];
+					v5[7] = flt_1043844C * m[5] + flt_1043846C * m[7] + flt_1043845C * m[6] + flt_1043843C * m[4];
+					v5[8] = flt_10438430 * m[8] + flt_10438440 * m[9] + flt_10438460 * m[11] + flt_10438450 * m[10];
+					v5[9] = flt_10438434 * m[8] + flt_10438444 * m[9] + flt_10438464 * m[11] + flt_10438454 * m[10];
+					v5[10] = flt_10438438 * m[8] + flt_10438448 * m[9] + flt_10438468 * m[11] + flt_10438458 * m[10];
+					v5[11] = flt_1043844C * m[9] + flt_1043846C * m[11] + flt_1043845C * m[10] + flt_1043843C * m[8];
+					v5[12] = flt_10438430 * m[12] + flt_10438440 * m[13] + flt_10438460 * m[15] + flt_10438450 * m[14];
+					v5[13] = flt_10438434 * m[12] + flt_10438444 * m[13] + flt_10438464 * m[15] + flt_10438454 * m[14];
+					v5[14] = flt_10438438 * m[12] + flt_10438448 * m[13] + flt_10438468 * m[15] + flt_10438458 * m[14];
+					v5[15] = flt_1043844C * m[13] + flt_1043846C * m[15] + flt_1043845C * m[14] + flt_1043843C * m[12];
+					memcpy(&flt_10438430, v5, 0x40u);
 				}
 				dword_10439D88 = 0;
 				++dword_10438470;
@@ -39657,78 +39668,78 @@ void __cdecl sub_100330E0(int a1, float *a2)
 				if (dword_10438C78[dword_100548CC])
 				{
 					v3 = &dword_10438D00[dword_100548CC];
-					qmemcpy(&flt_10438C80[16 * dword_100548CC], a2, 0x40u);
+					memcpy(&flt_10438C80[16 * dword_100548CC], m, 0x40u);
 					dword_10438C78[v2] = 0;
 				}
 				else
 				{
 					v4 = &flt_10438C80[16 * dword_100548CC];
-					v5[0] = flt_10438CB0[16 * dword_100548CC] * a2[3]
-						+ a2[2] * flt_10438CA0[16 * dword_100548CC]
-						+ a2[1] * flt_10438C90[16 * dword_100548CC]
-						+ *v4 * *a2;
-					v5[1] = a2[2] * flt_10438CA4[16 * dword_100548CC]
-						+ flt_10438C84[16 * dword_100548CC] * *a2
-						+ a2[1] * flt_10438C94[16 * dword_100548CC]
-						+ flt_10438CB4[16 * dword_100548CC] * a2[3];
-					v5[2] = flt_10438CB8[16 * dword_100548CC] * a2[3]
-						+ a2[1] * flt_10438C98[16 * dword_100548CC]
-						+ flt_10438C88[16 * dword_100548CC] * *a2
-						+ flt_10438CA8[16 * dword_100548CC] * a2[2];
-					v5[3] = a2[2] * flt_10438CAC[16 * dword_100548CC]
-						+ flt_10438CBC[16 * dword_100548CC] * a2[3]
-						+ flt_10438C9C[16 * dword_100548CC] * a2[1]
-						+ *a2 * flt_10438C8C[16 * dword_100548CC];
-					v5[4] = flt_10438C90[16 * dword_100548CC] * a2[5]
-						+ flt_10438CB0[16 * dword_100548CC] * a2[7]
-						+ a2[4] * *v4
-						+ flt_10438CA0[16 * dword_100548CC] * a2[6];
-					v5[5] = a2[4] * flt_10438C84[16 * dword_100548CC]
-						+ a2[7] * flt_10438CB4[16 * dword_100548CC]
-						+ a2[6] * flt_10438CA4[16 * dword_100548CC]
-						+ a2[5] * flt_10438C94[16 * dword_100548CC];
-					v5[6] = a2[5] * flt_10438C98[16 * dword_100548CC]
-						+ flt_10438CB8[16 * dword_100548CC] * a2[7]
-						+ flt_10438CA8[16 * dword_100548CC] * a2[6]
-						+ a2[4] * flt_10438C88[16 * dword_100548CC];
-					v5[7] = flt_10438C9C[16 * dword_100548CC] * a2[5]
-						+ a2[4] * flt_10438C8C[16 * dword_100548CC]
-						+ flt_10438CBC[16 * dword_100548CC] * a2[7]
-						+ flt_10438CAC[16 * dword_100548CC] * a2[6];
-					v5[8] = flt_10438C90[16 * dword_100548CC] * a2[9]
-						+ flt_10438CB0[16 * dword_100548CC] * a2[11]
-						+ a2[8] * *v4
-						+ flt_10438CA0[16 * dword_100548CC] * a2[10];
-					v5[9] = a2[8] * flt_10438C84[16 * dword_100548CC]
-						+ a2[11] * flt_10438CB4[16 * dword_100548CC]
-						+ a2[10] * flt_10438CA4[16 * dword_100548CC]
-						+ a2[9] * flt_10438C94[16 * dword_100548CC];
-					v5[10] = a2[9] * flt_10438C98[16 * dword_100548CC]
-						+ flt_10438CB8[16 * dword_100548CC] * a2[11]
-						+ flt_10438CA8[16 * dword_100548CC] * a2[10]
-						+ a2[8] * flt_10438C88[16 * dword_100548CC];
-					v5[11] = flt_10438C9C[16 * dword_100548CC] * a2[9]
-						+ a2[8] * flt_10438C8C[16 * dword_100548CC]
-						+ flt_10438CBC[16 * dword_100548CC] * a2[11]
-						+ flt_10438CAC[16 * dword_100548CC] * a2[10];
-					v5[12] = flt_10438C90[16 * dword_100548CC] * a2[13]
-						+ flt_10438CB0[16 * dword_100548CC] * a2[15]
-						+ a2[12] * *v4
-						+ flt_10438CA0[16 * dword_100548CC] * a2[14];
-					v5[13] = a2[12] * flt_10438C84[16 * dword_100548CC]
-						+ a2[15] * flt_10438CB4[16 * dword_100548CC]
-						+ a2[14] * flt_10438CA4[16 * dword_100548CC]
-						+ a2[13] * flt_10438C94[16 * dword_100548CC];
-					v5[14] = a2[13] * flt_10438C98[16 * dword_100548CC]
-						+ flt_10438CB8[16 * dword_100548CC] * a2[15]
-						+ flt_10438CA8[16 * dword_100548CC] * a2[14]
-						+ a2[12] * flt_10438C88[16 * dword_100548CC];
+					v5[0] = flt_10438CB0[16 * dword_100548CC] * m[3]
+						+ m[2] * flt_10438CA0[16 * dword_100548CC]
+						+ m[1] * flt_10438C90[16 * dword_100548CC]
+						+ *v4 * *m;
+					v5[1] = m[2] * flt_10438CA4[16 * dword_100548CC]
+						+ flt_10438C84[16 * dword_100548CC] * *m
+						+ m[1] * flt_10438C94[16 * dword_100548CC]
+						+ flt_10438CB4[16 * dword_100548CC] * m[3];
+					v5[2] = flt_10438CB8[16 * dword_100548CC] * m[3]
+						+ m[1] * flt_10438C98[16 * dword_100548CC]
+						+ flt_10438C88[16 * dword_100548CC] * *m
+						+ flt_10438CA8[16 * dword_100548CC] * m[2];
+					v5[3] = m[2] * flt_10438CAC[16 * dword_100548CC]
+						+ flt_10438CBC[16 * dword_100548CC] * m[3]
+						+ flt_10438C9C[16 * dword_100548CC] * m[1]
+						+ *m * flt_10438C8C[16 * dword_100548CC];
+					v5[4] = flt_10438C90[16 * dword_100548CC] * m[5]
+						+ flt_10438CB0[16 * dword_100548CC] * m[7]
+						+ m[4] * *v4
+						+ flt_10438CA0[16 * dword_100548CC] * m[6];
+					v5[5] = m[4] * flt_10438C84[16 * dword_100548CC]
+						+ m[7] * flt_10438CB4[16 * dword_100548CC]
+						+ m[6] * flt_10438CA4[16 * dword_100548CC]
+						+ m[5] * flt_10438C94[16 * dword_100548CC];
+					v5[6] = m[5] * flt_10438C98[16 * dword_100548CC]
+						+ flt_10438CB8[16 * dword_100548CC] * m[7]
+						+ flt_10438CA8[16 * dword_100548CC] * m[6]
+						+ m[4] * flt_10438C88[16 * dword_100548CC];
+					v5[7] = flt_10438C9C[16 * dword_100548CC] * m[5]
+						+ m[4] * flt_10438C8C[16 * dword_100548CC]
+						+ flt_10438CBC[16 * dword_100548CC] * m[7]
+						+ flt_10438CAC[16 * dword_100548CC] * m[6];
+					v5[8] = flt_10438C90[16 * dword_100548CC] * m[9]
+						+ flt_10438CB0[16 * dword_100548CC] * m[11]
+						+ m[8] * *v4
+						+ flt_10438CA0[16 * dword_100548CC] * m[10];
+					v5[9] = m[8] * flt_10438C84[16 * dword_100548CC]
+						+ m[11] * flt_10438CB4[16 * dword_100548CC]
+						+ m[10] * flt_10438CA4[16 * dword_100548CC]
+						+ m[9] * flt_10438C94[16 * dword_100548CC];
+					v5[10] = m[9] * flt_10438C98[16 * dword_100548CC]
+						+ flt_10438CB8[16 * dword_100548CC] * m[11]
+						+ flt_10438CA8[16 * dword_100548CC] * m[10]
+						+ m[8] * flt_10438C88[16 * dword_100548CC];
+					v5[11] = flt_10438C9C[16 * dword_100548CC] * m[9]
+						+ m[8] * flt_10438C8C[16 * dword_100548CC]
+						+ flt_10438CBC[16 * dword_100548CC] * m[11]
+						+ flt_10438CAC[16 * dword_100548CC] * m[10];
+					v5[12] = flt_10438C90[16 * dword_100548CC] * m[13]
+						+ flt_10438CB0[16 * dword_100548CC] * m[15]
+						+ m[12] * *v4
+						+ flt_10438CA0[16 * dword_100548CC] * m[14];
+					v5[13] = m[12] * flt_10438C84[16 * dword_100548CC]
+						+ m[15] * flt_10438CB4[16 * dword_100548CC]
+						+ m[14] * flt_10438CA4[16 * dword_100548CC]
+						+ m[13] * flt_10438C94[16 * dword_100548CC];
+					v5[14] = m[13] * flt_10438C98[16 * dword_100548CC]
+						+ flt_10438CB8[16 * dword_100548CC] * m[15]
+						+ flt_10438CA8[16 * dword_100548CC] * m[14]
+						+ m[12] * flt_10438C88[16 * dword_100548CC];
 					v3 = &dword_10438D00[dword_100548CC];
-					v5[15] = flt_10438C9C[16 * dword_100548CC] * a2[13]
-						+ a2[12] * flt_10438C8C[16 * dword_100548CC]
-						+ flt_10438CBC[16 * dword_100548CC] * a2[15]
-						+ flt_10438CAC[16 * dword_100548CC] * a2[14];
-					qmemcpy(v4, v5, 0x40u);
+					v5[15] = flt_10438C9C[16 * dword_100548CC] * m[13]
+						+ m[12] * flt_10438C8C[16 * dword_100548CC]
+						+ flt_10438CBC[16 * dword_100548CC] * m[15]
+						+ flt_10438CAC[16 * dword_100548CC] * m[14];
+					memcpy(v4, v5, 0x40u);
 				}
 				++ *v3;
 				break;
@@ -39847,7 +39858,7 @@ int *__cdecl sub_10033AA0(int a1, double *a2)
 					v7[13] = flt_10437C18 * a2[15] + flt_10437C08 * a2[14] + flt_10437BF8 * a2[13] + flt_10437BE8 * a2[12];
 					v7[14] = flt_10437C1C * a2[15] + flt_10437C0C * a2[14] + flt_10437BFC * a2[13] + flt_10437BEC * a2[12];
 					v7[15] = flt_10437C20 * a2[15] + flt_10437C10 * a2[14] + flt_10437C00 * a2[13] + flt_10437BF0 * a2[12];
-					qmemcpy(&flt_10437BE4, v7, 0x40u);
+					memcpy(&flt_10437BE4, v7, 0x40u);
 				}
 				dword_10439D88 = 0;
 				return (int *)++dword_10437C24;
@@ -39892,7 +39903,7 @@ int *__cdecl sub_10033AA0(int a1, double *a2)
 					v7[13] = flt_10438464 * a2[15] + flt_10438454 * a2[14] + flt_10438444 * a2[13] + flt_10438434 * a2[12];
 					v7[14] = flt_10438468 * a2[15] + flt_10438458 * a2[14] + flt_10438448 * a2[13] + flt_10438438 * a2[12];
 					v7[15] = flt_1043846C * a2[15] + flt_1043845C * a2[14] + flt_1043844C * a2[13] + flt_1043843C * a2[12];
-					qmemcpy(&flt_10438430, v7, 0x40u);
+					memcpy(&flt_10438430, v7, 0x40u);
 					dword_10439D88 = 0;
 				}
 				return (int *)++dword_10438470;
@@ -39987,7 +39998,7 @@ int *__cdecl sub_10033AA0(int a1, double *a2)
 						+ flt_10438CAC[16 * dword_100548CC] * a2[14]
 						+ flt_10438C9C[16 * dword_100548CC] * a2[13]
 						+ flt_10438C8C[16 * dword_100548CC] * a2[12];
-					qmemcpy(&flt_10438C80[16 * dword_100548CC], v7, 0x40u);
+					memcpy(&flt_10438C80[16 * dword_100548CC], v7, 0x40u);
 				}
 				++ *result;
 				break;
@@ -40113,7 +40124,7 @@ int *__cdecl sub_10034600(int a1, float a2, float a3)
 			*(float *)&v19[9] = flt_10437C08 * a2 - flt_10437BF8 * a3;
 			*(float *)&v19[10] = flt_10437C0C * a2 - flt_10437BFC * a3;
 			*(float *)&v19[11] = flt_10437C10 * a2 - flt_10437C00 * a3;
-			qmemcpy(&flt_10437BE4, v19, 0x40u);
+			memcpy(&flt_10437BE4, v19, 0x40u);
 		}
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
@@ -40161,7 +40172,7 @@ int *__cdecl sub_10034600(int a1, float a2, float a3)
 			*(float *)&v19[9] = flt_10438454 * a2 - flt_10438444 * a3;
 			*(float *)&v19[10] = flt_10438458 * a2 - flt_10438448 * a3;
 			*(float *)&v19[11] = flt_1043845C * a2 - flt_1043844C * a3;
-			qmemcpy(&flt_10438430, v19, 0x40u);
+			memcpy(&flt_10438430, v19, 0x40u);
 			result = (int *)(dword_10438470 + 1);
 			dword_10439D88 = 0;
 			++dword_10438470;
@@ -40227,7 +40238,7 @@ int *__cdecl sub_10034600(int a1, float a2, float a3)
 				*(float *)&v19[10] = a2 * flt_10438CA8[16 * dword_100548CC] - a3 * flt_10438C98[16 * dword_100548CC];
 				result = &dword_10438D00[dword_100548CC];
 				*(float *)&v19[11] = a2 * flt_10438CAC[16 * dword_100548CC] - a3 * flt_10438C9C[16 * dword_100548CC];
-				qmemcpy(&flt_10438C80[16 * dword_100548CC], v19, 0x40u);
+				memcpy(&flt_10438C80[16 * dword_100548CC], v19, 0x40u);
 			}
 			++ *result;
 		}
@@ -40351,7 +40362,7 @@ int *__cdecl sub_10034BD0(int a1, float a2, float a3)
 			v18[9] = flt_10437C08 * a2 + flt_10437BE8 * a3;
 			v18[10] = flt_10437C0C * a2 + flt_10437BEC * a3;
 			v18[11] = flt_10437C10 * a2 + flt_10437BF0 * a3;
-			qmemcpy(&flt_10437BE4, v18, 0x40u);
+			memcpy(&flt_10437BE4, v18, 0x40u);
 		}
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
@@ -40399,7 +40410,7 @@ int *__cdecl sub_10034BD0(int a1, float a2, float a3)
 			v18[9] = flt_10438454 * a2 + flt_10438434 * a3;
 			v18[10] = flt_10438458 * a2 + flt_10438438 * a3;
 			v18[11] = flt_1043845C * a2 + flt_1043843C * a3;
-			qmemcpy(&flt_10438430, v18, 0x40u);
+			memcpy(&flt_10438430, v18, 0x40u);
 			result = (int *)(dword_10438470 + 1);
 			dword_10439D88 = 0;
 			++dword_10438470;
@@ -40464,7 +40475,7 @@ int *__cdecl sub_10034BD0(int a1, float a2, float a3)
 				v18[15] = flt_10438CBC[16 * dword_100548CC];
 				result = &dword_10438D00[dword_100548CC];
 				v18[11] = v16 + v17;
-				qmemcpy(&flt_10438C80[16 * dword_100548CC], v18, 0x40u);
+				memcpy(&flt_10438C80[16 * dword_100548CC], v18, 0x40u);
 			}
 			++ *result;
 		}
@@ -40589,7 +40600,7 @@ int *__cdecl sub_100351A0(int a1, float a2, float a3)
 			v19[5] = flt_10437BF8 * a2 - flt_10437BE8 * a3;
 			v19[6] = flt_10437BFC * a2 - flt_10437BEC * a3;
 			v19[7] = flt_10437C00 * a2 - flt_10437BF0 * a3;
-			qmemcpy(&flt_10437BE4, v19, 0x40u);
+			memcpy(&flt_10437BE4, v19, 0x40u);
 		}
 		dword_10439D88 = 0;
 		return (int *)++dword_10437C24;
@@ -40637,7 +40648,7 @@ int *__cdecl sub_100351A0(int a1, float a2, float a3)
 			v19[5] = flt_10438444 * a2 - flt_10438434 * a3;
 			v19[6] = flt_10438448 * a2 - flt_10438438 * a3;
 			v19[7] = flt_1043844C * a2 - flt_1043843C * a3;
-			qmemcpy(&flt_10438430, v19, 0x40u);
+			memcpy(&flt_10438430, v19, 0x40u);
 			result = (int *)(dword_10438470 + 1);
 			dword_10439D88 = 0;
 			++dword_10438470;
@@ -40703,7 +40714,7 @@ int *__cdecl sub_100351A0(int a1, float a2, float a3)
 				v19[15] = flt_10438CBC[16 * dword_100548CC];
 				result = &dword_10438D00[dword_100548CC];
 				v19[7] = v17 - v18;
-				qmemcpy(&flt_10438C80[16 * dword_100548CC], v19, 0x40u);
+				memcpy(&flt_10438C80[16 * dword_100548CC], v19, 0x40u);
 			}
 			++ *result;
 		}
@@ -41619,7 +41630,7 @@ void *__cdecl sub_10037A5E(LPVOID lpMem, SIZE_T dwBytes)
 // 1043A46C: using guessed type int dword_1043A46C;
 
 //----- (10037D8D) --------------------------------------------------------
-SIZE_T __cdecl sub_10037D8D(_DWORD *lpMem)
+SIZE_T __cdecl sub_10037D8D(_DWORD *lpMem) /* FS: UNUSED: Exception Handler. */
 {
 	int v1; // esi
 	bool v2; // zf
