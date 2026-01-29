@@ -11,6 +11,24 @@
 #include <GL/gl.h>
 #include "glide.h"
 
+/* FS: In G3EXT.H in Glide driver source. */
+typedef FxU32 GrPixelFormat_t;
+
+#define GR_PIXFMT_I_8                           0x0001
+#define GR_PIXFMT_AI_88                         0x0002
+#define GR_PIXFMT_RGB_565                       0x0003
+#define GR_PIXFMT_ARGB_1555                     0x0004
+#define GR_PIXFMT_ARGB_8888                     0x0005
+#define GR_PIXFMT_AA_2_RGB_565                  0x0006
+#define GR_PIXFMT_AA_2_ARGB_1555                0x0007
+#define GR_PIXFMT_AA_2_ARGB_8888                0x0008
+#define GR_PIXFMT_AA_4_RGB_565                  0x0009
+#define GR_PIXFMT_AA_4_ARGB_1555                0x000a
+#define GR_PIXFMT_AA_4_ARGB_8888                0x000b
+#define GR_PIXFMT_AA_8_RGB_565                  0x000c 	/* 8xaa */
+#define GR_PIXFMT_AA_8_ARGB_1555                0x000d
+#define GR_PIXFMT_AA_8_ARGB_8888                0x000e
+
 //-------------------------------------------------------------------------
 // Function declarations
 
@@ -204,7 +222,7 @@ int __stdcall glVertexPointerEXT(GLint size, GLenum type, GLsizei stride, GLsize
 void __stdcall glViewport(GLint x, GLint y, GLsizei width, GLsizei height);
 int __stdcall wglChoosePixelFormat(int a1, int a2);
 BOOL __stdcall wglCopyContext(HGLRC, HGLRC, UINT);
-int __cdecl sub_10028C60(int width, int height);
+GrScreenResolution_t __cdecl WGL_GetGlideResolution(int width, int height);
 int __cdecl geErrorCallbackFn(LPCSTR lpText, int fatal); // idb
 int __cdecl sub_10028F30(int a1, int a2, char a3);
 void __cdecl sub_10029000(int a1, int a2, char *a3);
@@ -269,7 +287,7 @@ void __stdcall glLockArraysEXT(int a1, int a2);
 int glUnlockArraysEXT();
 void __stdcall glPointSize(GLfloat size);
 int __stdcall glPointParameterfEXT(int a1, int a2);
-void __stdcall glPointParameterfvEXT(int a1, int a2);
+void __stdcall glPointParameterfvEXT(GLenum pname, const GLfloat *params);
 int __stdcall sub_1002C420(int a1);
 int sub_1002C440();
 int __stdcall sub_1002C450(HDC hdc, _WORD *lpRamp);
@@ -411,8 +429,8 @@ size_t __cdecl sub_10036BE9(void *Buffer, size_t ElementSize, size_t ElementCoun
 // size_t __cdecl fread(void *Buffer, size_t ElementSize, size_t ElementCount, FILE *Stream);
 void __cdecl sub_10036D00(LPVOID lpMem);
 // double __cdecl atof(const char *String);
-char *__cdecl sub_10037094(char *VarName);
-// char *__cdecl getenv(const char *VarName);
+char *__cdecl MT_GetEnv(char *VarName);
+// char *__cdecl getenv(const char *SSTV2_GAMMA_ENV_VAR_STR);
 // int sprintf(char *const Buffer, const char *const Format, ...);
 // char *__cdecl _strupr(char *String);
 void *__cdecl sub_10037A5E(LPVOID lpMem, SIZE_T dwBytes);
@@ -513,42 +531,45 @@ float flt_1004F070 = 1.0; // weak
 int dword_1004F074 = -2; // weak
 _UNKNOWN unk_1004F078; // weak
 char byte_1004F149[3] = { '\0', '\0', '\0' }; // weak
-CHAR SubKey[] = "System\\CurrentControlSet\\Services\\Class\\Display"; // idb
-char byte_1004F17C[] = { 'S' }; // weak
-CHAR ValueName[] = "DriverDesc"; // idb
-char SubStr[] = "Velocity"; // idb
-char aVoodoo3[] = "Voodoo3"; // idb
+
+const char SubKey[] = "System\\CurrentControlSet\\Services\\Class\\Display"; // idb
+const char byte_1004F17C[] = { 'S' }; // weak
+const char ValueName[] = "DriverDesc"; // idb
+const char SubStr[] = "Velocity"; // idb
+const char aVoodoo3[] = "Voodoo3"; // idb
+
 int dword_1004F1CC = 1768703836; // weak
 __int16 word_1004F1D0 = 25956; // weak
 char byte_1004F1D2 = '\0'; // weak
-CHAR aSaveFxGlideNum[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
-CHAR aFxGlideNumTmu[] = "FX_GLIDE_NUM_TMU"; // idb
-CHAR aSaveFxGlideNum_0[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
-CHAR aSaveFxGlideNum_1[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
+
+char aSaveFxGlideNum[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
+char aFxGlideNumTmu[] = "FX_GLIDE_NUM_TMU"; // idb
+char aSaveFxGlideNum_0[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
+char aSaveFxGlideNum_1[] = "SAVE_FX_GLIDE_NUM_TMU"; // idb
 char byte_1004F22E[] = { '2' }; // weak
-CHAR aFxGlideNumTmu_0[] = "FX_GLIDE_NUM_TMU"; // idb
-CHAR aFxGlideNumTmu_1[] = "FX_GLIDE_NUM_TMU"; // idb
+char aFxGlideNumTmu_0[] = "FX_GLIDE_NUM_TMU"; // idb
+char aFxGlideNumTmu_1[] = "FX_GLIDE_NUM_TMU"; // idb
 char FileName[] = "WickedGL.swp"; // idb
-CHAR aSoftwareMetaby[] = "Software\\Metabyte"; // idb
-CHAR aWickedglCompre[] = "WickedGL_Compress_Accepted"; // idb
-CHAR aWickedglCompre_0[] = "WickedGL_Compress_Rejected"; // idb
-CHAR aWickedglTcTota[] = "WickedGL_TC_Total_Size"; // idb
-CHAR aWickedglTcCach[] = "WickedGL_TC_Cache_Hits"; // idb
-CHAR aWickedglTcCach_0[] = "WickedGL_TC_Cache_Miss"; // idb
-CHAR aWickedglAnimat[] = "WickedGL_Animated_Tex_Cnt"; // idb
-CHAR aWickedglAvgCom[] = "WickedGL_Avg_Compress_Err"; // idb
+char aSoftwareMetaby[] = "Software\\Metabyte"; // idb
+char aWickedglCompre[] = "WickedGL_Compress_Accepted"; // idb
+char aWickedglCompre_0[] = "WickedGL_Compress_Rejected"; // idb
+char aWickedglTcTota[] = "WickedGL_TC_Total_Size"; // idb
+char aWickedglTcCach[] = "WickedGL_TC_Cache_Hits"; // idb
+char aWickedglTcCach_0[] = "WickedGL_TC_Cache_Miss"; // idb
+char aWickedglAnimat[] = "WickedGL_Animated_Tex_Cnt"; // idb
+char aWickedglAvgCom[] = "WickedGL_Avg_Compress_Err"; // idb
 #ifdef PRESS_C_TO_CONTINUE_STARTUP
-char aMetabyteWicked[18] = "METABYTE/QICKED3D"; // weak
-#else
 char aMetabyteWicked[18] = "METABYTE/WICKED3D"; // weak
+#else
+char aMetabyteWicked[18] = "METABYTE/QICKED3D"; // weak
 #endif
 const char WGL_RENDERER_STR_V2[] = "3Dfx Interactive Voodoo2(tm)"; // weak
 const char WGL_RENDERER_STR_V5[] = "3Dfx Interactive Voodoo5(tm)"; // weak
 const char WGL_RENDERER_STR_V3[] = "3Dfx Interactive Voodoo3(tm)"; // weak
 const char WGL_RENDERER_STR_V1[] = "3Dfx Interactive Voodoo(tm)"; // weak
 const char WGL_VERSION_STR[] = "1.1"; // weak
-CHAR aSoftwareMetaby_0[] = "Software\\Metabyte"; // idb
-CHAR aWickedglGammaC[] = "WickedGL_gamma_control"; // idb
+char aSoftwareMetaby_0[] = "Software\\Metabyte"; // idb
+char aWickedglGammaC[] = "WickedGL_gamma_control"; // idb
 char aGlArbMultitext[555] = "GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array GL_SGIS_multitexture WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string WGL_3DFX_gamma_control WGL_EXT_gamma_control GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_S3_s3tc "; // weak
 char aGlArbMultitext_0[485] = "GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array GL_SGIS_multitexture WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string WGL_3DFX_gamma_control WGL_EXT_gamma_control "; // weak
 char aGlArbMultitext_1[510] = "GL_ARB_multitexture GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array GL_SGIS_multitexture WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_S3_s3tc "; // weak
@@ -558,53 +579,53 @@ char aGlExtAbgrGlExt_0[444] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint G
 char aGlExtAbgrGlExt_1[469] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string GL_ARB_texture_compression GL_EXT_texture_compression_s3tc GL_S3_s3tc "; // weak
 char aGlExtAbgrGlExt_2[399] = "GL_EXT_abgr GL_EXT_bgra GL_EXT_clip_volume_hint GL_EXT_compiled_vertex_array GL_EXT_packed_pixels GL_EXT_paletted_texture GL_EXT_shared_texture_palette GL_EXT_vertex_array WGL_EXT_swap_control 3DFX_set_global_palette GL_EXT_point_parameters GL_EXT_texture_env_add GL_SGI_compiled_vertex_array GL_SGIS_texture_edge_clamp GL_EXT_texture_edge_clamp WGL_EXT_extensions_string WGL_ARB_extensions_string "; // weak
 char aGrsstwinopenNo[] = "grSstWinOpen: not enough memory for requested buffers"; // idb
-CHAR WGL_GLIDE_FATAL_ERROR_STR[] = "Glide fatal error"; // idb
+char WGL_GLIDE_FATAL_ERROR_STR[] = "Glide fatal error"; // idb
 char WGL_GLIDE_ERROR_STR[12] = "Glide error"; // weak
 char aGrsstwinopenex[16] = "grSstWinOpenExt"; // weak
-CHAR aGlideError[] = "Glide error"; // idb
-char aWickedglDemoVe[23] = "WICKEDGL DEMO VERSION:"; // weak
-char aThisVersionOfW[67] = "This version of WickedGL is intended for evaluation purposes only."; // weak
-char aIfYouLikeThisS[58] = "If you like this software, please get the registered copy"; // weak
-char aAtWwwWicked3dC[20] = "at www.wicked3d.com"; // weak
-char aPressCToContin[21] = "Press C to continue."; // weak
-CHAR tstrFilename[] = "glide2x.dll"; // idb
-CHAR aGlide2xDll_0[] = "glide2x.dll"; // idb
-CHAR SubBlock[] = "\\StringFileInfo\\040904E4\\CompanyName"; // idb
+char aGlideError[] = "Glide error"; // idb
+const char WGL_DEMO_STR_LINE1[] = "WICKEDGL DEMO VERSION:"; // weak
+const char WGL_DEMO_STR_LINE2[] = "This version of WickedGL is intended for evaluation purposes only."; // weak
+const char WGL_DEMO_STR_LINE3[] = "If you like this software, please get the registered copy"; // weak
+const char WGL_DEMO_STR_LINE4[] = "at www.wicked3d.com"; // weak
+const char WGL_DEMO_STR_LINE5[] = "Press C to continue."; // weak
+char GLIDE2X_DLL_FILENAME0[] = "glide2x.dll"; // idb
+char GLIDE2X_DLL_FILENAME1[] = "glide2x.dll"; // idb
+char SubBlock[] = "\\StringFileInfo\\040904E4\\CompanyName"; // idb
 char aMetabyte_0[] = "Metabyte"; // idb
 char aWickedglWarnin[18] = "WICKEDGL WARNING:"; // weak
 char aThisVersionOfW_0[65] = "This version of WickedGL is not compatible with Wicked3D stereo."; // weak
 char aReinstallVoodo[47] = "Reinstall Voodoo2/Voodoo3 version of WickedGL."; // weak
 char aPressCToContin_0[21] = "Press C to continue."; // weak
-char VarName[] = "SSTV2_GAMMA"; // idb
-char aSstGamma[] = "SST_GAMMA"; // idb
-CHAR ModuleName[] = "glide3x.dll"; // idb
-CHAR aStringfileinfo[] = "\\StringFileInfo\\040904E4\\CompanyName"; // idb
+const char SSTV2_GAMMA_ENV_VAR_STR[] = "SSTV2_GAMMA"; // idb
+const char SST_GAMMA_ENV_VAR_STR[] = "SST_GAMMA"; // idb
+char ModuleName[] = "glide3x.dll"; // idb
+char aStringfileinfo[] = "\\StringFileInfo\\040904E4\\CompanyName"; // idb
 char aMetabyte[] = "Metabyte"; // idb
-CHAR aGlide3xOrg[] = "glide3x.org"; // idb
-CHAR aStringfileinfo_0[] = "\\StringFileInfo\\040904E4\\Graphics Subsystem"; // idb
+char aGlide3xOrg[] = "glide3x.org"; // idb
+char aStringfileinfo_0[] = "\\StringFileInfo\\040904E4\\Graphics Subsystem"; // idb
 char aVoodoo2Tm[] = "Voodoo^2(tm)"; // idb
-CHAR aGl2glidesst[] = "gl2GlideSST"; // idb
-CHAR aSoftwareMetaby_1[] = "Software\\Metabyte"; // idb
-CHAR aWickedglMipmap[] = "WickedGL_MipMap_Dither"; // idb
-CHAR aWickedgl3b[] = "WickedGL_3B"; // idb
+char aGl2glidesst[] = "gl2GlideSST"; // idb
+char aSoftwareMetaby_1[] = "Software\\Metabyte"; // idb
+char aWickedglMipmap[] = "WickedGL_MipMap_Dither"; // idb
+char aWickedgl3b[] = "WickedGL_3B"; // idb
 char aVoodoo5[] = "Voodoo5"; // idb
 char aVoodoo4[] = "Voodoo4"; // idb
-CHAR aSoftwareMetaby_2[] = "Software\\Metabyte"; // idb
-CHAR aWickedgl32bppT[] = "WickedGL_32BPP_Textures"; // idb
-CHAR aWickedglCompre_1[] = "WickedGL_Compress_Textures"; // idb
-CHAR aWickedglCompre_2[] = "WickedGL_Compress_Alpha"; // idb
-CHAR aWickedglMaxCom[] = "WickedGL_Max_Compress_Err"; // idb
-CHAR aWickedglTcCach_1[] = "WickedGL_TC_Cache_Size"; // idb
-char aOpenglError[13] = "OpenGL error"; // weak
-char aNotAVoodoo5Boa[98] = "Not a Voodoo5 board. Voodoo5 is required. Reinstall different version of WickedGL for this board."; // weak
-char aOpenglError_0[13] = "OpenGL error"; // weak
-char aNotAWicked3dVo[152] = "Not a Wicked3D Voodoo2 board(glide3x.dll). Board with multitexturing is required. Use the other version of the driver for boards with one texture unit."; // weak
-CHAR aOpenglError_1[] = "OpenGL error"; // idb
-CHAR Text[] = "Copy protection error. Reinstall Wicked3D driver."; // idb
-char aTribes2Exe[] = "TRIBES2.EXE"; // idb
-CHAR aOpenglError_2[] = "OpenGL error"; // idb
-CHAR aErrorInitializ[] = "Error initializing Glide"; // idb
-CHAR ProcName[] = "_pciMapCardMulti@24"; // idb
+char aSoftwareMetaby_2[] = "Software\\Metabyte"; // idb
+char aWickedgl32bppT[] = "WickedGL_32BPP_Textures"; // idb
+char aWickedglCompre_1[] = "WickedGL_Compress_Textures"; // idb
+char aWickedglCompre_2[] = "WickedGL_Compress_Alpha"; // idb
+char aWickedglMaxCom[] = "WickedGL_Max_Compress_Err"; // idb
+char aWickedglTcCach_1[] = "WickedGL_TC_Cache_Size"; // idb
+const char WGL_OPENGL_ERROR_STR0[] = "OpenGL error"; // weak
+const char aNotAVoodoo5Boa[] = "Not a Voodoo5 board. Voodoo5 is required. Reinstall different version of WickedGL for this board."; // weak
+const char WGL_OPENGL_ERROR_STR1[] = "OpenGL error"; // weak
+const char WGL_NOT_W3D_V2_BOARD_NO_MTEX_STR[152] = "Not a Wicked3D Voodoo2 board(glide3x.dll). Board with multitexturing is required. Use the other version of the driver for boards with one texture unit."; // weak
+const char WGL_OPENGL_ERROR_STR2[] = "OpenGL error"; // idb
+const char WGL_COPY_PROTECTION_ERROR_STR[] = "Copy protection error. Reinstall Wicked3D driver."; // idb
+const char aTribes2Exe[] = "TRIBES2.EXE"; // idb
+const char aOpenglError_2[] = "OpenGL error"; // idb
+char aErrorInitializ[] = "Error initializing Glide"; // idb
+char ProcName[] = "_pciMapCardMulti@24"; // idb
 char aWglgetdevicega[] = "wglGetDeviceGammaRamp3DFX"; // idb
 char aWglsetdevicega[] = "wglSetDeviceGammaRamp3DFX"; // idb
 char aWglgetdevicega_0[] = "wglGetDeviceGammaRampNVIDIA"; // idb
@@ -676,22 +697,23 @@ char aGlpointparamet_4[] = "glPointParametersfvEXT"; // idb
 char aWglswapinterva[] = "wglSwapIntervalEXT"; // idb
 char aWglgetswapinte[] = "wglGetSwapIntervalEXT"; // idb
 char aDisablecrossha[] = "DisableCrossHair"; // idb
-CHAR WGL_BANSHEE_STEREO_1[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
+char WGL_BANSHEE_STEREO_1[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
 char aSoftwareMetaby_6[25] = "Software\\Metabyte\\Stereo"; // weak
-CHAR aSoftwareMetaby_3[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
+char aSoftwareMetaby_3[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
 char aSoftwareMetaby_4[24] = "Software\\Metabyte\\Glide"; // weak
-CHAR WGL_BANSHEE_STEREO_2[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
+char WGL_BANSHEE_STEREO_2[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
 char aSoftwareMetaby_8[25] = "Software\\Metabyte\\Stereo"; // weak
-CHAR WGL_BANSHEE_STEREO_3[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
+char WGL_BANSHEE_STEREO_3[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
 char aSoftwareMetaby_10[25] = "Software\\Metabyte\\Stereo"; // weak
-CHAR aSoftwareMetaby_11[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
+char aSoftwareMetaby_11[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
 char aSoftwareMetaby_12[24] = "Software\\Metabyte\\Glide"; // weak
-CHAR aSoftwareMetaby_13[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
+char aSoftwareMetaby_13[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
 char aSoftwareMetaby_14[24] = "Software\\Metabyte\\Glide"; // weak
-CHAR aSoftwareMetaby_15[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
+char aSoftwareMetaby_15[] = "Software\\Metabyte\\Banshee\\Glide"; // idb
 char aSoftwareMetaby_16[24] = "Software\\Metabyte\\Glide"; // weak
-CHAR WGL_BANSHEE_STEREO_4[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
+char WGL_BANSHEE_STEREO_4[] = "Software\\Metabyte\\Banshee\\Stereo"; // idb
 char aSoftwareMetaby_18[25] = "Software\\Metabyte\\Stereo"; // weak
+
 int WGL_MAXTEX_SIZE = 256; // weak
 _UNKNOWN unk_100511A8; // weak
 _UNKNOWN *off_100514B8 = &off_100514B8; // weak
@@ -717,7 +739,7 @@ int dword_10054818 = 0; // weak
 int dword_1005481C = 0; // weak
 int dword_10054820 = 0; // weak
 int dword_10054824 = 0; // weak
-int dword_10054828 = 0; // weak
+int WGL_CURRENT_ALPHA_FUNC = 0; // weak
 char byte_1005482C = '\0'; // weak
 int dword_10054830 = 0; // weak
 int dword_10054834 = 0; // weak
@@ -1026,14 +1048,14 @@ int dword_1042D04C; // weak
 int dword_1042D050; // weak
 int dword_1042D054; // weak
 int dword_1042D058; // weak
-int dword_1042D05C; // weak
-int GL_POINT_SIZE_MIN_EXT_INT; // weak
-int GL_POINT_SIZE_MAX_EXT_INT; // weak
-int GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT; // weak
-int dword_1042D06C; // weak
-int dword_1042D070; // weak
-int dword_1042D074; // weak
-int dword_1042D078; // point param weak
+int WGL_CURRENT_POINT_SIZE; // weak
+int WGL_POINT_SIZE_MIN_EXT_INT; // weak
+int WGL_POINT_SIZE_MAX_EXT_INT; // weak
+int WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT; // weak
+int WGL_POINT_DISTANCE_ATTENUATION_EXT_A; // weak
+int WGL_POINT_DISTANCE_ATTENUATION_EXT_B; // weak
+int WGL_POINT_DISTANCE_ATTENUATION_EXT_C; // weak
+int WGL_CURRENT_POINT_PARAM_ATT_SIZE; // point param weak
 float flt_1042D07C; // weak
 float flt_1042D080; // weak
 float flt_1042D084; // weak
@@ -1119,7 +1141,7 @@ int dword_1043715C; // weak
 int WGL_DISPLAY_LOW_VID_MEM_ERROR; // weak
 HDC dword_10437164; // idb
 HDC dword_10437168; // idb
-int (__stdcall *dword_1043716C)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD); // weak
+GrContext_t (__stdcall *_grSstWinOpenExtFuncPtr)(FxU32, GrScreenResolution_t, GrScreenRefresh_t, GrColorFormat_t, GrOriginLocation_t, GrPixelFormat_t, int, int); // weak
 int dword_10437170; // weak
 __int64 qword_10437178; // weak
 int dword_10437180; // weak
@@ -1653,7 +1675,7 @@ BOOL __stdcall DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 		}
 		sub_10001050(0);
 		dword_1043712C = 0;
-		grDisable(3);
+		grDisable(GR_PASSTHRU);
 	}
 	return 1;
 }
@@ -1676,38 +1698,38 @@ void __stdcall glAlphaFunc(GLenum func, GLclampf ref)
 	{
 		case GL_NEVER:
 			v2 = 0;
-			dword_10054828 = 0;
+			WGL_CURRENT_ALPHA_FUNC = 0;
 			break;
 		case GL_LESS:
 			v2 = 1;
-			dword_10054828 = 1;
+			WGL_CURRENT_ALPHA_FUNC = 1;
 			break;
 		case GL_EQUAL:
 			v2 = 2;
-			dword_10054828 = 2;
+			WGL_CURRENT_ALPHA_FUNC = 2;
 			break;
 		case GL_LEQUAL:
 			v2 = 3;
-			dword_10054828 = 3;
+			WGL_CURRENT_ALPHA_FUNC = 3;
 			break;
 		case GL_GREATER:
 			v2 = 4;
-			dword_10054828 = 4;
+			WGL_CURRENT_ALPHA_FUNC = 4;
 			break;
 		case GL_NOTEQUAL:
 			v2 = 5;
-			dword_10054828 = 5;
+			WGL_CURRENT_ALPHA_FUNC = 5;
 			break;
 		case GL_GEQUAL:
 			v2 = 6;
-			dword_10054828 = 6;
+			WGL_CURRENT_ALPHA_FUNC = 6;
 			break;
 		case GL_ALWAYS:
 			v2 = 7;
-			dword_10054828 = 7;
+			WGL_CURRENT_ALPHA_FUNC = 7;
 			break;
 		default:
-			v2 = dword_10054828;
+			v2 = WGL_CURRENT_ALPHA_FUNC;
 			break;
 	}
 	v3 = (__int64)(ref * 255.0);
@@ -1731,7 +1753,7 @@ void __stdcall glAlphaFunc(GLenum func, GLclampf ref)
 }
 // 10054818: using guessed type int dword_10054818;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054860: using guessed type int dword_10054860;
 // 1005486C: using guessed type int dword_1005486C;
@@ -1934,7 +1956,7 @@ LABEL_38:
 		dword_1043739C = 1;
 		dword_1043738C = dword_10054878;
 		if (dword_10054878 == 1
-			&& (dword_10054818 && dword_10054860 || dword_10054824 && (result = dword_10054828) != 0 && dword_10054828 != 7))
+			&& (dword_10054818 && dword_10054860 || dword_10054824 && (result = WGL_CURRENT_ALPHA_FUNC) != 0 && WGL_CURRENT_ALPHA_FUNC != 7))
 		{
 			result = dword_1042D13C != 7425;
 			dword_10437394 = result;
@@ -2352,7 +2374,7 @@ LABEL_148:
 // 10036596: using guessed type int __stdcall grRenderBuffer(_DWORD);
 // 10054818: using guessed type int dword_10054818;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 10054860: using guessed type int dword_10054860;
 // 10054870: using guessed type int dword_10054870;
 // 10054878: using guessed type int dword_10054878;
@@ -2552,9 +2574,9 @@ void __stdcall glBegin(GLenum mode)
 			&& !dword_104371E0
 			&& (dword_10054818 && dword_1005486C
 				|| dword_10054824
-				&& (dword_10054828 == 4
-					|| (dword_10054828 == 6 || dword_10054828 == 2) && byte_1043719C
-					|| dword_10054828 == 5 && !byte_1043719C))
+				&& (WGL_CURRENT_ALPHA_FUNC == 4
+					|| (WGL_CURRENT_ALPHA_FUNC == 6 || WGL_CURRENT_ALPHA_FUNC == 2) && byte_1043719C
+					|| WGL_CURRENT_ALPHA_FUNC == 5 && !byte_1043719C))
 			|| (v1 & 0xF0) != 0 && !dword_104371E0 && dword_10054818 && dword_10054864))
 	{
 		v2 = sub_10017160;
@@ -2891,7 +2913,7 @@ LABEL_80:
 // 100547E8: using guessed type int dword_100547E8;
 // 10054818: using guessed type int dword_10054818;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 10054840: using guessed type int dword_10054840;
 // 10054844: using guessed type int WGL_COMPARE_FUNCTION;
 // 10054848: using guessed type int dword_10054848;
@@ -3210,7 +3232,7 @@ LABEL_56:
 	dword_104371B8 = dword_10054820;
 	dword_10437188 = 1;
 	if (dword_10054878 == 1)
-		dword_10437394 = !v5 && (!dword_10054824 || !dword_10054828 || dword_10054828 == 7) || dword_1042D13C != 7425;
+		dword_10437394 = !v5 && (!dword_10054824 || !WGL_CURRENT_ALPHA_FUNC || WGL_CURRENT_ALPHA_FUNC == 7) || dword_1042D13C != 7425;
 	if (dword_104371E0)
 		goto LABEL_71;
 	if (!v6)
@@ -3230,7 +3252,7 @@ LABEL_71:
 	dword_104371A0 = 1;
 	dword_104371A8 = -16777216;
 LABEL_72:
-	if (v4 && (!dword_10054824 || dword_10054828 == 7))
+	if (v4 && (!dword_10054824 || WGL_CURRENT_ALPHA_FUNC == 7))
 	{
 		dword_10437194 = 4;
 		byte_1043719C = 0;
@@ -3239,7 +3261,7 @@ LABEL_72:
 LABEL_76:
 	if (dword_10054824)
 	{
-		dword_10437194 = dword_10054828;
+		dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 		byte_1043719C = byte_1005482C;
 	}
 	else
@@ -3253,7 +3275,7 @@ LABEL_76:
 // 1005481C: using guessed type int dword_1005481C;
 // 10054820: using guessed type int dword_10054820;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054858: using guessed type int dword_10054858;
 // 1005485C: using guessed type int dword_1005485C;
@@ -4549,7 +4571,7 @@ LABEL_14:
 	dword_104371A0 = 1;
 	dword_104371A8 = -16777216;
 LABEL_15:
-	if (dword_10054818 && dword_1005486C && (!dword_10054824 || dword_10054828 == 7))
+	if (dword_10054818 && dword_1005486C && (!dword_10054824 || WGL_CURRENT_ALPHA_FUNC == 7))
 	{
 		dword_10437194 = 4;
 		byte_1043719C = 0;
@@ -4558,7 +4580,7 @@ LABEL_15:
 LABEL_20:
 	if (dword_10054824)
 	{
-		dword_10437194 = dword_10054828;
+		dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 		byte_1043719C = byte_1005482C;
 	}
 	else
@@ -4568,7 +4590,7 @@ LABEL_20:
 }
 // 10054818: using guessed type int dword_10054818;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054840: using guessed type int dword_10054840;
 // 10054850: using guessed type int dword_10054850;
@@ -5192,11 +5214,11 @@ void __stdcall glDisable(GLenum cap)
 LABEL_11:
 						dword_104371A0 = 0;
 					}
-					if (dword_10054818 && dword_1005486C && (!dword_10054824 || dword_10054828 == 7))
+					if (dword_10054818 && dword_1005486C && (!dword_10054824 || WGL_CURRENT_ALPHA_FUNC == 7))
 						goto LABEL_35;
 					if (!dword_10054824)
 						goto LABEL_36;
-					dword_10437194 = dword_10054828;
+					dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 					byte_1043719C = byte_1005482C;
 					break;
 				case GL_ALPHA_TEST:
@@ -5223,14 +5245,14 @@ LABEL_35:
 					dword_104371B8 = 0;
 					if (dword_10054878 == 1)
 					{
-						if (dword_10054824 && dword_10054828 && dword_10054828 != 7)
+						if (dword_10054824 && WGL_CURRENT_ALPHA_FUNC && WGL_CURRENT_ALPHA_FUNC != 7)
 							v1 = dword_1042D13C != 7425;
 						dword_10437394 = v1;
 					}
 					dword_104371A0 = 0;
 					if (dword_10054824)
 					{
-						dword_10437194 = dword_10054828;
+						dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 						byte_1043719C = byte_1005482C;
 					}
 					else
@@ -5383,7 +5405,7 @@ LABEL_61:
 // 1003659C: using guessed type int __stdcall grDrawTriangle(_DWORD, _DWORD, _DWORD);
 // 10054818: using guessed type int dword_10054818;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054830: using guessed type int dword_10054830;
 // 10054834: using guessed type int dword_10054834;
@@ -5598,7 +5620,7 @@ LABEL_21:
 						if (dword_10054850)
 							goto LABEL_26;
 					}
-					if (dword_10054818 && dword_1005486C && (!dword_10054824 || dword_10054828 == 7))
+					if (dword_10054818 && dword_1005486C && (!dword_10054824 || WGL_CURRENT_ALPHA_FUNC == 7))
 					{
 LABEL_61:
 						byte_1043719C = 0;
@@ -5608,7 +5630,7 @@ LABEL_61:
 LABEL_26:
 					if (dword_10054824)
 					{
-						dword_10437194 = dword_10054828;
+						dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 						byte_1043719C = byte_1005482C;
 					}
 					else
@@ -5623,13 +5645,13 @@ LABEL_49:
 					dword_10437188 = 1;
 					if (dword_10054878 == 1)
 					{
-						if (dword_10054818 && dword_10054860 || dword_10054828 && dword_10054828 != 7)
+						if (dword_10054818 && dword_10054860 || WGL_CURRENT_ALPHA_FUNC && WGL_CURRENT_ALPHA_FUNC != 7)
 							v11 = dword_1042D13C != 7425;
 						dword_10437394 = v11;
 					}
-					if (!dword_104371E0 && dword_10054818 && dword_1005486C && dword_10054828 == 7)
+					if (!dword_104371E0 && dword_10054818 && dword_1005486C && WGL_CURRENT_ALPHA_FUNC == 7)
 						goto LABEL_61;
-					dword_10437194 = dword_10054828;
+					dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 					byte_1043719C = byte_1005482C;
 					return;
 				case GL_BLEND:
@@ -5638,7 +5660,7 @@ LABEL_49:
 					dword_10054818 = 1;
 					dword_10437188 = 1;
 					if (dword_10054878 == 1)
-						dword_10437394 = !dword_10054860 && (!dword_10054824 || !dword_10054828 || dword_10054828 == 7)
+						dword_10437394 = !dword_10054860 && (!dword_10054824 || !WGL_CURRENT_ALPHA_FUNC || WGL_CURRENT_ALPHA_FUNC == 7)
 						|| dword_1042D13C != 7425;
 					if (dword_104371E0)
 						goto LABEL_43;
@@ -5659,12 +5681,12 @@ LABEL_43:
 						if (dword_104371E0)
 							goto LABEL_47;
 					}
-					if (dword_1005486C && (!dword_10054824 || dword_10054828 == 7))
+					if (dword_1005486C && (!dword_10054824 || WGL_CURRENT_ALPHA_FUNC == 7))
 						goto LABEL_61;
 LABEL_47:
 					if (!dword_10054824)
 						goto LABEL_49;
-					dword_10437194 = dword_10054828;
+					dword_10437194 = WGL_CURRENT_ALPHA_FUNC;
 					byte_1043719C = byte_1005482C;
 					return;
 				case 0xC11u:
@@ -5834,7 +5856,7 @@ LABEL_102:
 // 1005481C: using guessed type int dword_1005481C;
 // 10054820: using guessed type int dword_10054820;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054830: using guessed type int dword_10054830;
 // 10054834: using guessed type int dword_10054834;
@@ -25391,10 +25413,10 @@ int Draw_GL_POINT()
 			sub_100019C0();
 			v0 = (float *)dword_103649F0;
 		}
-		if (dword_1042D078)
-			flt_1042D07C = *(float *)&dword_1042D078 * v0[4];
+		if (WGL_CURRENT_POINT_PARAM_ATT_SIZE)
+			flt_1042D07C = *(float *)&WGL_CURRENT_POINT_PARAM_ATT_SIZE * v0[4];
 		else
-			LODWORD(flt_1042D07C) = dword_1042D05C;
+			LODWORD(flt_1042D07C) = WGL_CURRENT_POINT_SIZE;
 		if (SLODWORD(flt_1042D07C) >= 1056964608)
 		{
 			memcpy(&GLIDE_TRIANGLE_V0, v0, 0x30u);
@@ -25408,8 +25430,8 @@ int Draw_GL_POINT()
 					{
 						if (SLODWORD(flt_1042D07C) >= 1082130432)
 						{
-							if (SLODWORD(flt_1042D07C) > GL_POINT_SIZE_MAX_EXT_INT)
-								LODWORD(flt_1042D07C) = GL_POINT_SIZE_MAX_EXT_INT;
+							if (SLODWORD(flt_1042D07C) > WGL_POINT_SIZE_MAX_EXT_INT)
+								LODWORD(flt_1042D07C) = WGL_POINT_SIZE_MAX_EXT_INT;
 							v13 = *(_DWORD *)dword_103649F0;
 							flt_1042D080 = flt_1042D07C * 0.5;
 							GLIDE_TRIANGLE_V0 = v13;
@@ -25546,9 +25568,9 @@ int Draw_GL_POINT()
 // 100365CC: using guessed type int __stdcall grDrawPoint(_DWORD);
 // 100548B4: using guessed type int dword_100548B4;
 // 103649F0: using guessed type int dword_103649F0;
-// 1042D05C: using guessed type int dword_1042D05C;
+// 1042D05C: using guessed type int WGL_CURRENT_POINT_SIZE;
 // 1042D064: using guessed type int dword_1042D064;
-// 1042D078: using guessed type int dword_1042D078;
+// 1042D078: using guessed type int WGL_CURRENT_POINT_PARAM_ATT_SIZE;
 // 1042D07C: using guessed type float flt_1042D07C;
 // 1042D080: using guessed type float flt_1042D080;
 // 1042D084: using guessed type float flt_1042D084;
@@ -31407,7 +31429,7 @@ BOOL __stdcall wglCopyContext(HGLRC a1, HGLRC a2, UINT a3)
 }
 
 //----- (10028C60) --------------------------------------------------------
-int __cdecl sub_10028C60(int width, int height)
+GrScreenResolution_t __cdecl WGL_GetGlideResolution(int width, int height)
 {
 	int result; // eax
 
@@ -31415,87 +31437,92 @@ int __cdecl sub_10028C60(int width, int height)
 	{
 		case 320:
 			if (height == 200)
-				return 0;
+				return GR_RESOLUTION_320x200;
 			if (height == 240)
-				return 1;
-			return 255;
+				return GR_RESOLUTION_320x240;
+			return GR_RESOLUTION_NONE;
 		case 400:
 			if (height == 256)
-				return 2;
+				return GR_RESOLUTION_400x256;
 			if (height == 300)
-				return 15;
-			return 255;
+				return GR_RESOLUTION_400x300;
+			return GR_RESOLUTION_NONE;
 		case 512:
 			if (height == 384)
-				return 3;
+				return GR_RESOLUTION_512x384;
 			if (height == 256)
-				return 11;
-			return 255;
+				return GR_RESOLUTION_512x256;
+			return GR_RESOLUTION_NONE;
 		case 640:
 			switch (height)
 			{
 				case 200:
-					return 4;
+					return GR_RESOLUTION_640x200;
 				case 350:
-					return 5;
+					return GR_RESOLUTION_640x350;
 				case 400:
-					return 6;
+					return GR_RESOLUTION_640x400;
 				case 480:
-					return 7;
+					return GR_RESOLUTION_640x480;
 			}
-			return 255;
+			return GR_RESOLUTION_NONE;
 		case 800:
 			if (height == 600)
-				return 8;
-			return 255;
+				return GR_RESOLUTION_800x600;
+			return GR_RESOLUTION_NONE;
 		case 960:
 			if (height == 720)
-				return 9;
-			return 255;
+				return GR_RESOLUTION_960x720;
+			return GR_RESOLUTION_NONE;
 		case 856:
 			if (height == 480)
-				return 10;
-			return 255;
+				return GR_RESOLUTION_856x480;
+			return GR_RESOLUTION_NONE;
 		case 1024:
 			if (height == 768)
-				return 12;
-			return 255;
+				return GR_RESOLUTION_1024x768;
+			return GR_RESOLUTION_NONE;
 		case 1280:
 			if (height == 1024)
-				return 13;
+				return GR_RESOLUTION_1280x1024;
 			if (height == 960)
-				return 17;
-			return 255;
+				return GR_RESOLUTION_1280x960;
+			return GR_RESOLUTION_NONE;
 		case 1600:
 			if (height == 1200)
-				return 14;
+				return GR_RESOLUTION_1600x1200;
 			if (height == 1024)
-				return 18;
-			return 255;
+				return GR_RESOLUTION_1600x1024;
+			return GR_RESOLUTION_NONE;
 		case 1152:
 			if (height == 864)
-				return 16;
-			return 255;
+				return GR_RESOLUTION_1152x864;
+			return GR_RESOLUTION_NONE;
 		case 1792:
 			if (height == 1344)
-				return 19;
-			return 255;
+				return GR_RESOLUTION_1792x1344;
+			return GR_RESOLUTION_NONE;
 		case 1856:
 			if (height == 1392)
-				return 20;
-			return 255;
+				return GR_RESOLUTION_1856x1392;
+			return GR_RESOLUTION_NONE;
 		case 1920:
 			if (height == 1440)
-				return 21;
-			return 255;
+				return GR_RESOLUTION_1920x1440;
+			return GR_RESOLUTION_NONE;
 	}
+
 	if (width != 2048)
-		return 255;
+		return GR_RESOLUTION_NONE;
+
 	if (height == 1536)
-		return 22;
-	result = 23;
+		return GR_RESOLUTION_2048x1536;
+
+	result = GR_RESOLUTION_2048x2048;
+
 	if (height != 2048)
-		return 255;
+		return GR_RESOLUTION_NONE;
+
 	return result;
 }
 
@@ -31732,9 +31759,10 @@ unsigned int __cdecl sub_10029100(int a1, const char *a2)
 //----- (10029210) --------------------------------------------------------
 int sub_10029210()
 {
-	int v0; // edi
+	GrScreenResolution_t resolution; // edi
 	int v1; // ebx
-	int (__stdcall * ProcAddress)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD); // eax
+//GrContext_t FX_CALL 
+	GrContext_t (__stdcall * ProcAddress)(FxU32, GrScreenResolution_t, GrScreenRefresh_t, GrColorFormat_t, GrOriginLocation_t, GrPixelFormat_t, int, int); // eax
 	int v3; // eax
 	int v4; // esi
 	int v5; // ebp
@@ -31877,23 +31905,23 @@ int sub_10029210()
 	dword_10437134 = GetWindowLongA(hWnd, -4);
 	if (dword_10437168)
 		SetDeviceGammaRamp(dword_10437168, &unk_10435778);
-	v0 = sub_10028C60(width, height);
+	resolution = WGL_GetGlideResolution(width, height);
 	v1 = 3;
 	if (*(_DWORD *)&dword_10437128 != 1)
 		v1 = 2;
 	if (!WGL_IS_VSA100)
 		goto LABEL_15;
-	ProcAddress = dword_1043716C;
-	if (!dword_1043716C)
+	ProcAddress = _grSstWinOpenExtFuncPtr;
+	if (!_grSstWinOpenExtFuncPtr)
 	{
-		ProcAddress = (int (__stdcall *)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD))grGetProcAddress(aGrsstwinopenex);
-		dword_1043716C = ProcAddress;
+		ProcAddress = (GrContext_t (__stdcall *)(FxU32, GrScreenResolution_t, GrScreenRefresh_t, GrColorFormat_t, GrOriginLocation_t, GrPixelFormat_t, int, int))grGetProcAddress(aGrsstwinopenex);
+		_grSstWinOpenExtFuncPtr = ProcAddress;
 	}
 	if (WGL_IS_VSA100 && ProcAddress && WGL_BPP == 32)
-		*(float *)&v3 = COERCE_FLOAT(ProcAddress(hWnd, v0, 0, 0, 0, 5, v1, 1));
+		*(float *)&v3 = COERCE_FLOAT(ProcAddress(hWnd, resolution, 0, 0, 0, 5, v1, 1));
 	else
 		LABEL_15:
-	*(float *)&v3 = COERCE_FLOAT(grSstWinOpen(hWnd, v0, 0, 0, 0, v1, 1));
+	*(float *)&v3 = COERCE_FLOAT(grSstWinOpen(hWnd, resolution, 0, 0, 0, v1, 1));
 	v4 = v3;
 	v123 = *(float *)&v3;
 	v5 = grTexMaxAddress(0);
@@ -31909,19 +31937,19 @@ LABEL_26:
 	if (v4)
 	{
 		grSstWinClose(v4);
-		if (WGL_IS_VSA100 && dword_1043716C && WGL_BPP == 32)
-			*(float *)&v6 = COERCE_FLOAT(dword_1043716C(hWnd, v0, 0, 0, 0, 5, 2, 1));
+		if (WGL_IS_VSA100 && _grSstWinOpenExtFuncPtr && WGL_BPP == 32)
+			*(float *)&v6 = COERCE_FLOAT(_grSstWinOpenExtFuncPtr(hWnd, resolution, 0, 0, 0, 5, 2, 1));
 		else
-			*(float *)&v6 = COERCE_FLOAT(grSstWinOpen(hWnd, v0, 0, 0, 0, 2, 1));
+			*(float *)&v6 = COERCE_FLOAT(grSstWinOpen(hWnd, resolution, 0, 0, 0, 2, 1));
 		v4 = v6;
 		v123 = *(float *)&v6;
 		goto LABEL_26;
 	}
 LABEL_27:
-	if (WGL_IS_VSA100 && dword_1043716C && WGL_BPP == 32)
-		*(float *)&v7 = COERCE_FLOAT(dword_1043716C(hWnd, v0, 0, 0, 0, 5, 2, 1));
+	if (WGL_IS_VSA100 && _grSstWinOpenExtFuncPtr && WGL_BPP == 32)
+		*(float *)&v7 = COERCE_FLOAT(_grSstWinOpenExtFuncPtr(hWnd, resolution, 0, 0, 0, 5, 2, 1));
 	else
-		*(float *)&v7 = COERCE_FLOAT(grSstWinOpen(hWnd, v0, 0, 0, 0, 2, 1));
+		*(float *)&v7 = COERCE_FLOAT(grSstWinOpen(hWnd, resolution, 0, 0, 0, 2, 1));
 	v123 = *(float *)&v7;
 	if (*(float *)&v7 == 0.0)
 	{
@@ -31945,15 +31973,15 @@ LABEL_27:
 		goto LABEL_148;
 	}
 LABEL_38:
-	while (GetAsyncKeyState(67))
+	while (GetAsyncKeyState(0x43))
 		;
 	grRenderBuffer(GR_BUFFER_FRONTBUFFER);
 	grColorMask(1, 0);
 	grDepthMask(0);
 	grBufferClear(0, 0, 0);
-	v8 = aWickedglDemoVe;
+	v8 = WGL_DEMO_STR_LINE1;
 	v9 = height / 2 - 48;
-	v10 = (width - 9 * strlen(aWickedglDemoVe)) >> 1;
+	v10 = (width - 9 * strlen(WGL_DEMO_STR_LINE1)) >> 1;
 	do
 	{
 		if (!*v8)
@@ -31961,9 +31989,9 @@ LABEL_38:
 		sub_10028F30(v10, v9, *v8++);
 		v10 += 9;
 	} while (v8);
-	v11 = aThisVersionOfW;
+	v11 = WGL_DEMO_STR_LINE2;
 	v12 = height / 2 - 16;
-	v13 = (width - 9 * strlen(aThisVersionOfW)) >> 1;
+	v13 = (width - 9 * strlen(WGL_DEMO_STR_LINE2)) >> 1;
 	do
 	{
 		if (!*v11)
@@ -31971,10 +31999,10 @@ LABEL_38:
 		sub_10028F30(v13, v12, *v11++);
 		v13 += 9;
 	} while (v11);
-	v14 = aIfYouLikeThisS;
+	v14 = WGL_DEMO_STR_LINE3;
 	v105 = height / 2;
-	v98 = aIfYouLikeThisS;
-	v91 = 2 * ((width - 9 * strlen(aIfYouLikeThisS)) >> 1);
+	v98 = WGL_DEMO_STR_LINE3;
+	v91 = 2 * ((width - 9 * strlen(WGL_DEMO_STR_LINE3)) >> 1);
 	do
 	{
 		v15 = *v14;
@@ -32015,11 +32043,11 @@ LABEL_38:
 		v98 = ++v14;
 		v91 += 18;
 	} while (v14);
-	v23 = aAtWwwWicked3dC;
+	v23 = WGL_DEMO_STR_LINE4;
 	v24 = height / 2 + 16;
 	v113 = v24;
-	v106 = aAtWwwWicked3dC;
-	v92 = 2 * ((width - 9 * strlen(aAtWwwWicked3dC)) >> 1);
+	v106 = WGL_DEMO_STR_LINE4;
+	v92 = 2 * ((width - 9 * strlen(WGL_DEMO_STR_LINE4)) >> 1);
 	do
 	{
 		v25 = *v23;
@@ -32075,11 +32103,11 @@ LABEL_38:
 		QueryPerformanceCounter(&v130);
 	} while (v130.QuadPart < PerformanceCount.QuadPart);
 #endif // PRESS_C_TO_CONTINUE_STARTUP
-	v33 = aPressCToContin;
+	v33 = WGL_DEMO_STR_LINE5;
 	v34 = height / 2 + 48;
 	v100 = v34;
-	v114 = aPressCToContin;
-	v93 = 2 * ((width - 9 * strlen(aPressCToContin)) >> 1);
+	v114 = WGL_DEMO_STR_LINE5;
+	v93 = 2 * ((width - 9 * strlen(WGL_DEMO_STR_LINE5)) >> 1);
 	do
 	{
 		v35 = *v33;
@@ -32124,9 +32152,9 @@ LABEL_38:
 		v93 += 18;
 	} while (v33);
 #ifdef PRESS_C_TO_CONTINUE_STARTUP
-	while (!GetAsyncKeyState(67))
+	while (!GetAsyncKeyState(0x43))
 		;
-	while (GetAsyncKeyState(67))
+	while (GetAsyncKeyState(0x43))
 		;
 #endif // PRESS_C_TO_CONTINUE_STARTUP
 	grRenderBuffer(GR_BUFFER_FRONTBUFFER);
@@ -32135,17 +32163,17 @@ LABEL_38:
 	grBufferClear(0, 0, 0);
 	if (v123 != 0.0)
 	{
-		FileVersionInfoSizeA = GetFileVersionInfoSizeA(tstrFilename, &dwHandle);
+		FileVersionInfoSizeA = GetFileVersionInfoSizeA(GLIDE2X_DLL_FILENAME0, &dwHandle);
 		dwHandle = FileVersionInfoSizeA;
 		if (FileVersionInfoSizeA)
 		{
 			LowPart = malloc(FileVersionInfoSizeA);
 			PerformanceCount.LowPart = (DWORD)LowPart;
-			if (GetFileVersionInfoA(aGlide2xDll_0, 0, dwHandle, LowPart)
+			if (GetFileVersionInfoA(GLIDE2X_DLL_FILENAME1, 0, dwHandle, LowPart)
 				&& VerQueryValueA(LowPart, SubBlock, &lpBuffer, &puLen)
 				&& strstr((const char *)lpBuffer, aMetabyte_0))
 			{
-				while (GetAsyncKeyState(67))
+				while (GetAsyncKeyState(0x43))
 					;
 				grRenderBuffer(GR_BUFFER_FRONTBUFFER);
 				grColorMask(1, 0);
@@ -32341,9 +32369,9 @@ LABEL_38:
 					v117 = ++v74;
 					v97 += 18;
 				} while (v74);
-				while (!GetAsyncKeyState(67))
+				while (!GetAsyncKeyState(0x43))
 					;
-				while (GetAsyncKeyState(67))
+				while (GetAsyncKeyState(0x43))
 					;
 				grRenderBuffer(GR_BUFFER_FRONTBUFFER);
 				grColorMask(1, 0);
@@ -32376,7 +32404,7 @@ LABEL_148:
 		grCullMode(0);
 		grTexCombine(1, 1, 0, 1, 0, 0, 0);
 		if (*(_DWORD *)&dword_10437124 != 2)
-			grEnable(2);
+			grEnable(GR_ALLOW_MIPMAP_DITHER);
 	}
 	if (dword_10437168)
 	{
@@ -32385,7 +32413,7 @@ LABEL_148:
 	else
 	{
 		v123 = 0.0;
-		v85 = sub_10037094(VarName);
+		v85 = MT_GetEnv(SSTV2_GAMMA_ENV_VAR_STR);
 		if (v85)
 		{
 			v86 = atof(v85);
@@ -32393,7 +32421,7 @@ LABEL_148:
 			if (v86 != 0.0)
 				goto LABEL_160;
 		}
-		v87 = sub_10037094(aSstGamma);
+		v87 = MT_GetEnv(SST_GAMMA_ENV_VAR_STR);
 		if (v87)
 			v123 = atof(v87);
 		if (v123 != 0.0)
@@ -32460,7 +32488,7 @@ LABEL_148:
 // 10437138: using guessed type int dword_10437138;
 // 10437154: using guessed type int dword_10437154;
 // 10437160: using guessed type int dword_10437160;
-// 1043716C: using guessed type int (__stdcall *dword_1043716C)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
+// 1043716C: using guessed type int (__stdcall *_grSstWinOpenExtFuncPtr)(_DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD, _DWORD);
 
 //----- (1002A080) --------------------------------------------------------
 int sub_1002A080()
@@ -32513,7 +32541,7 @@ LRESULT __stdcall sub_1002A170(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 			{
 				sub_10029210();
 				dword_1043712C = 1;
-				grEnable(3);
+				grEnable(GR_PASSTHRU);
 				v4 = 0;
 				dword_100548D8 = -1;
 				dword_100548DC = -1;
@@ -32526,7 +32554,7 @@ LRESULT __stdcall sub_1002A170(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam
 		else if (dword_10437130)
 		{
 			dword_1043712C = 0;
-			grDisable(3);
+			grDisable(GR_PASSTHRU);
 			sub_1002A080();
 		}
 	}
@@ -32764,15 +32792,15 @@ HGLRC __stdcall wglCreateContext(HDC hdc)
 		if (!dword_1043715C)
 		{
 			if (v8)
-				MessageBoxA(0, aNotAWicked3dVo, aOpenglError_0, 0x1010u);
+				MessageBoxA(0, WGL_NOT_W3D_V2_BOARD_NO_MTEX_STR, WGL_OPENGL_ERROR_STR1, 0x1010u);
 			else
-				MessageBoxA(0, Text, aOpenglError_1, 0x1010u);
+				MessageBoxA(0, WGL_COPY_PROTECTION_ERROR_STR, WGL_OPENGL_ERROR_STR2, 0x1010u);
 		}
 	}
 	else
 	{
 		dword_1043715C = 0;
-		MessageBoxA(0, aNotAVoodoo5Boa, aOpenglError, 0x1010u);
+		MessageBoxA(0, aNotAVoodoo5Boa, WGL_OPENGL_ERROR_STR0, 0x1010u);
 	}
 	dword_100547E8 = 0;
 	dword_100547F0 = 1065353216;
@@ -32883,7 +32911,7 @@ HGLRC __stdcall wglCreateContext(HDC hdc)
 	dword_10054820 = 0;
 	dword_10054824 = 0;
 	flt_1042D02C = flt_1042CBD8 * 0.2 + flt_1042CC08;
-	dword_10054828 = 7;
+	WGL_CURRENT_ALPHA_FUNC = 7;
 	byte_1005482C = 0;
 	dword_10054840 = 0;
 	WGL_COMPARE_FUNCTION = GR_CMP_LESS;
@@ -32960,7 +32988,7 @@ HGLRC __stdcall wglCreateContext(HDC hdc)
 		bottom = Rect.bottom;
 	}
 	v23 = (unsigned __int16)(bottom - LOWORD(Rect.top));
-	if (sub_10028C60((unsigned __int16)(right - LOWORD(Rect.left)), v23) == 255)
+	if (WGL_GetGlideResolution((unsigned __int16)(right - LOWORD(Rect.left)), v23) == 255)
 	{
 		if (dmPelsWidth <= v25)
 			dmPelsWidth = v25;
@@ -32977,7 +33005,7 @@ LABEL_77:
 				if (++dmPelsWidth > 1600)
 					goto LABEL_80;
 			}
-			while (sub_10028C60(dmPelsWidth, dmPelsHeight) == 255)
+			while (WGL_GetGlideResolution(dmPelsWidth, dmPelsHeight) == 255)
 			{
 				dmPelsHeight = v27 + 1;
 				if (dmPelsHeight > 1200)
@@ -32999,14 +33027,14 @@ LABEL_80:
 	dword_1042D050 = (unsigned __int16)(right - LOWORD(Rect.left));
 	dword_1042D054 = (unsigned __int16)(v24 - LOWORD(Rect.top));
 	dword_1042D058 = 1;
-	dword_1042D05C = 1065353216;
-	GL_POINT_SIZE_MIN_EXT_INT = 0;
-	GL_POINT_SIZE_MAX_EXT_INT = 1174405120;
-	GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = 1065353216;
-	dword_1042D06C = 1065353216;
-	dword_1042D070 = 0;
-	dword_1042D074 = 0;
-	dword_1042D078 = 0;
+	WGL_CURRENT_POINT_SIZE = 1065353216;
+	WGL_POINT_SIZE_MIN_EXT_INT = 0;
+	WGL_POINT_SIZE_MAX_EXT_INT = 1174405120;
+	WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = 1065353216;
+	WGL_POINT_DISTANCE_ATTENUATION_EXT_A = 1065353216;
+	WGL_POINT_DISTANCE_ATTENUATION_EXT_B = 0;
+	WGL_POINT_DISTANCE_ATTENUATION_EXT_C = 0;
+	WGL_CURRENT_POINT_PARAM_ATT_SIZE = 0;
 	v28 = sub_10029210();
 	if (v28)
 	{
@@ -33139,7 +33167,7 @@ LABEL_80:
 // 1005481C: using guessed type int dword_1005481C;
 // 10054820: using guessed type int dword_10054820;
 // 10054824: using guessed type int dword_10054824;
-// 10054828: using guessed type int dword_10054828;
+// 10054828: using guessed type int WGL_CURRENT_ALPHA_FUNC;
 // 1005482C: using guessed type char byte_1005482C;
 // 10054840: using guessed type int dword_10054840;
 // 10054844: using guessed type int WGL_COMPARE_FUNCTION;
@@ -33278,14 +33306,14 @@ LABEL_80:
 // 1042D050: using guessed type int dword_1042D050;
 // 1042D054: using guessed type int dword_1042D054;
 // 1042D058: using guessed type int dword_1042D058;
-// 1042D05C: using guessed type int dword_1042D05C;
+// 1042D05C: using guessed type int WGL_CURRENT_POINT_SIZE;
 // 1042D060: using guessed type int dword_1042D060;
 // 1042D064: using guessed type int dword_1042D064;
-// 1042D068: using guessed type int GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
-// 1042D06C: using guessed type int dword_1042D06C;
-// 1042D070: using guessed type int dword_1042D070;
-// 1042D074: using guessed type int dword_1042D074;
-// 1042D078: using guessed type int dword_1042D078;
+// 1042D068: using guessed type int WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
+// 1042D06C: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_A;
+// 1042D070: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_B;
+// 1042D074: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_C;
+// 1042D078: using guessed type int WGL_CURRENT_POINT_PARAM_ATT_SIZE;
 // 1042D11C: using guessed type float flt_1042D11C;
 // 1042D120: using guessed type float flt_1042D120;
 // 1042D124: using guessed type float flt_1042D124;
@@ -34278,19 +34306,19 @@ void __stdcall glPointSize(GLfloat size)
 	char v3; // c2
 	bool v4; // c3
 
-	v2 = size < (double)*(float *)&GL_POINT_SIZE_MAX_EXT_INT;
+	v2 = size < (double)*(float *)&WGL_POINT_SIZE_MAX_EXT_INT;
 	v3 = 0;
-	v4 = size == *(float *)&GL_POINT_SIZE_MAX_EXT_INT;
-	dword_1042D05C = LODWORD(size);
+	v4 = size == *(float *)&WGL_POINT_SIZE_MAX_EXT_INT;
+	WGL_CURRENT_POINT_SIZE = LODWORD(size);
 	if ((v1 & 0x4100) == 0)
-		GL_POINT_SIZE_MAX_EXT_INT = LODWORD(size);
-	if (*(float *)&dword_1042D074 != 0.0)
-		*(float *)&dword_1042D078 = size * 0.29289323 / sqrt(*(float *)&dword_1042D074);
+		WGL_POINT_SIZE_MAX_EXT_INT = LODWORD(size);
+	if (*(float *)&WGL_POINT_DISTANCE_ATTENUATION_EXT_C != 0.0)
+		*(float *)&WGL_CURRENT_POINT_PARAM_ATT_SIZE = size * 0.29289323 / sqrt(*(float *)&WGL_POINT_DISTANCE_ATTENUATION_EXT_C);
 }
-// 1042D05C: using guessed type int dword_1042D05C;
+// 1042D05C: using guessed type int WGL_CURRENT_POINT_SIZE;
 // 1042D064: using guessed type int dword_1042D064;
-// 1042D074: using guessed type int dword_1042D074;
-// 1042D078: using guessed type int dword_1042D078;
+// 1042D074: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_C;
+// 1042D078: using guessed type int WGL_CURRENT_POINT_PARAM_ATT_SIZE;
 
 //----- (1002C320) --------------------------------------------------------
 int __stdcall glPointParameterfEXT(int a1, int a2)
@@ -34300,21 +34328,21 @@ int __stdcall glPointParameterfEXT(int a1, int a2)
 	result = a1 - GL_POINT_SIZE_MIN_EXT;
 	if (a1 == GL_POINT_SIZE_MIN_EXT)
 	{
-		GL_POINT_SIZE_MIN_EXT_INT = a2;
+		WGL_POINT_SIZE_MIN_EXT_INT = a2;
 	}
 	else
 	{
 		result = a1 - GL_POINT_SIZE_MAX_EXT;
 		if (a1 == GL_POINT_SIZE_MAX_EXT)
 		{
-			*(float *)&GL_POINT_SIZE_MAX_EXT_INT = *(float *)&a2 * 0.29289323;
+			*(float *)&WGL_POINT_SIZE_MAX_EXT_INT = *(float *)&a2 * 0.29289323;
 		}
 		else
 		{
 			result = a1 - GL_POINT_FADE_THRESHOLD_SIZE_EXT;
 			if (a1 == GL_POINT_FADE_THRESHOLD_SIZE_EXT)
 			{
-				GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = a2;
+				WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = a2;
 				return a2;
 			}
 		}
@@ -34323,52 +34351,52 @@ int __stdcall glPointParameterfEXT(int a1, int a2)
 }
 // 1042D060: using guessed type int dword_1042D060;
 // 1042D064: using guessed type int dword_1042D064;
-// 1042D068: using guessed type int GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
+// 1042D068: using guessed type int WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
 
 //----- (1002C360) --------------------------------------------------------
-void __stdcall glPointParameterfvEXT(GLenum a1, const GLfloat *a2)
+void __stdcall glPointParameterfvEXT(GLenum pname, const GLfloat *params)
 {
 	int v2; // edx
-	float v3; // eax
+	float att_c; // eax
 
 	// 0 - a
 	// 1 - b
 	// 2 - c
 
-	switch (a1)
+	switch (pname)
 	{
 		case GL_POINT_SIZE_MIN_EXT:
-			GL_POINT_SIZE_MIN_EXT_INT = *(_DWORD *)a2;
+			WGL_POINT_SIZE_MIN_EXT_INT = *(_DWORD *)params;
 			break;
 		case GL_POINT_SIZE_MAX_EXT:
-			*(float *)&GL_POINT_SIZE_MAX_EXT_INT = a2[0] * 0.29289323;
+			*(float *)&WGL_POINT_SIZE_MAX_EXT_INT = params[0] * 0.29289323;
 			break;
 		case GL_POINT_FADE_THRESHOLD_SIZE_EXT:
-			GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = *(_DWORD *)a2;
+			WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT = *(_DWORD *)params;
 			break;
 		case GL_DISTANCE_ATTENUATION_EXT:
-			v2 = *(_DWORD *)(a2 + 4); // b
-			v3 = *(float *)(a2 + 8); // c
-			dword_1042D06C = *(_DWORD *)a2; // a
-			dword_1042D074 = LODWORD(v3); // c
-			dword_1042D070 = v2; // b
-			if (v3 == 0.0) // c
-				dword_1042D078 = 0;
+			v2 = *(_DWORD *)(params + 4); // b
+			att_c = *(float *)(params + 8); // c
+			WGL_POINT_DISTANCE_ATTENUATION_EXT_A = *(_DWORD *)params; // a
+			WGL_POINT_DISTANCE_ATTENUATION_EXT_C = LODWORD(att_c); // c
+			WGL_POINT_DISTANCE_ATTENUATION_EXT_B = v2; // b
+			if (att_c == 0.0) // c
+				WGL_CURRENT_POINT_PARAM_ATT_SIZE = 0;
 			else
-				*(float *)&dword_1042D078 = *(float *)&dword_1042D05C * 0.29289323 / sqrt(*(float *)&dword_1042D074);
+				*(float *)&WGL_CURRENT_POINT_PARAM_ATT_SIZE = *(float *)&WGL_CURRENT_POINT_SIZE * 0.29289323 / sqrt(*(float *)&WGL_POINT_DISTANCE_ATTENUATION_EXT_C);
 			break;
 		default:
 			return;
 	}
 }
-// 1042D05C: using guessed type int dword_1042D05C;
+// 1042D05C: using guessed type int WGL_CURRENT_POINT_SIZE;
 // 1042D060: using guessed type int dword_1042D060;
 // 1042D064: using guessed type int dword_1042D064;
-// 1042D068: using guessed type int GL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
-// 1042D06C: using guessed type int dword_1042D06C;
-// 1042D070: using guessed type int dword_1042D070;
-// 1042D074: using guessed type int dword_1042D074;
-// 1042D078: using guessed type int dword_1042D078;
+// 1042D068: using guessed type int WGL_POINT_FADE_THRESHOLD_SIZE_EXT_INT;
+// 1042D06C: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_A;
+// 1042D070: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_B;
+// 1042D074: using guessed type int WGL_POINT_DISTANCE_ATTENUATION_EXT_C;
+// 1042D078: using guessed type int WGL_CURRENT_POINT_PARAM_ATT_SIZE;
 
 //----- (1002C420) --------------------------------------------------------
 int __stdcall sub_1002C420(int a1)
@@ -34848,11 +34876,11 @@ BOOL __stdcall wglMakeCurrent(HDC a1, HGLRC a2)
 		if (a2)
 		{
 			dword_1043712C = 1;
-			grEnable(3);
+			grEnable(GR_PASSTHRU);
 			return 1;
 		}
 		dword_1043712C = 0;
-		grDisable(3);
+		grDisable(GR_PASSTHRU);
 	}
 	return 1;
 }
@@ -35334,7 +35362,7 @@ int __stdcall wglSwapBuffers(int a1)
 		if (!dword_1043712C)
 		{
 			dword_1043712C = 1;
-			grEnable(3);
+			grEnable(GR_PASSTHRU);
 		}
 	}
 	return 1;
@@ -41420,14 +41448,15 @@ LABEL_11:
 // 1043A46C: using guessed type int dword_1043A46C;
 
 //----- (10037094) --------------------------------------------------------
-char *__cdecl sub_10037094(char *VarName)
+char *__cdecl MT_GetEnv(char *VarName)
 {
-	char *v1; // esi
+	char *str; // esi
 
 	_lock(12);
-	v1 = getenv(VarName);
+	str = getenv(VarName);
 	_unlock(12);
-	return v1;
+
+	return str;
 }
 // 10039FDB: using guessed type _DWORD __cdecl _lock(_DWORD);
 // 1003A03C: using guessed type _DWORD __cdecl _unlock(_DWORD);
