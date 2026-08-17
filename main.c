@@ -8006,7 +8006,7 @@ void __stdcall glReadPixels(
 	unsigned __int16 *v18; // edi
 	char *v19; // ecx
 	unsigned __int16 *v20; // esi
-	GLsizei v21; // ebp
+	GLsizei col; // ebp
 	unsigned __int16 v22; // ax
 	int v23; // [esp+18h] [ebp-54h] BYREF
 	int v24; // [esp+1Ch] [ebp-50h]
@@ -8085,16 +8085,16 @@ void __stdcall glReadPixels(
 					{
 						v19 = pixelsb;
 						v20 = v18;
-						v21 = width;
+						col = width;
 						do
 						{
 							v19 += 3;
 							v22 = *v20++;
-							*(v19 - 5) = HIBYTE(v22) & 0xF8;
-							*(v19 - 4) = (v22 >> 3) & 0xFC;
-							*(v19 - 3) = 8 * v22;
-							--v21;
-						} while (v21);
+							*(v19 - 5) = HIBYTE(v22) & 0xF8; /* R */
+							*(v19 - 4) = (v22 >> 3) & 0xFC; /* G */
+							*(v19 - 3) = 8 * v22; /* B */
+							--col;
+						} while (col);
 						v17 = widthb;
 					}
 					v18 = (unsigned __int16 *)((char *)v18 + v17);
