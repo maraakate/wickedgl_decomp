@@ -8145,7 +8145,7 @@ void __stdcall glReadPixels(
 				} while (!v16);
 			}
 		}
-		grLfbUnlock(0, WGL_CURRENT_BUFFER_MODE);
+		grLfbUnlock(GR_LFB_READ_ONLY, WGL_CURRENT_BUFFER_MODE);
 	}
 }
 // 100365AE: using guessed type int __stdcall grLfbUnlock(_DWORD, _DWORD);
