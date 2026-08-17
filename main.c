@@ -8021,9 +8021,19 @@ void __stdcall glReadPixels(
 	char *pixelsa; // [esp+88h] [ebp+1Ch]
 	char *pixelsb; // [esp+88h] [ebp+1Ch]
 
-	if (width == 1 && height == 1 && format == 6402)
+#if 0
+	typedef struct
 	{
-		if (type == 5126)
+		int                size;
+		void *lfbPtr;
+		FxU32              strideInBytes;
+		GrLfbWriteMode_t   writeMode;
+		GrOriginLocation_t origin;
+	} GrLfbInfo_t;
+#endif
+	if (width == 1 && height == 1 && format == GL_DEPTH_COMPONENT)
+	{
+		if (type == GL_FLOAT)
 		{
 			if (WGL_DEPTHBUFFER_MODE != 1)
 			{
@@ -8050,7 +8060,7 @@ void __stdcall glReadPixels(
 			*(float *)pixels = 1.0 / (double)(unsigned int)WGL_GR_ZDEPTH_MIN_MAX_VAL * (double)v28[0];
 		}
 	}
-	else if (format == 6407 && type == 5121)
+	else if (format == GL_RGB && type == GL_UNSIGNED_BYTE)
 	{
 		grFinish();
 		if (WGL_GR_BITS_RGBA_VAL + dword_1042D148 + dword_1042D14C + dword_1042D150 <= 16)
